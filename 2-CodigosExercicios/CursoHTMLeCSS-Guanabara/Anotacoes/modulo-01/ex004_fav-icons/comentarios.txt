@@ -1,0 +1,11 @@
+fav icons
+    - ícones que aparecem na aba do navegador
+    - extensão do arquivo .ico
+    - tamanho: 16x16, 32x32, 48x48, 64x64
+
+Sites para encontrar imagens .ico
+    - IconAchieve
+
+Sites para desenhar/criar imagens para .ico
+    - favicon.cc
+    - favicon.io

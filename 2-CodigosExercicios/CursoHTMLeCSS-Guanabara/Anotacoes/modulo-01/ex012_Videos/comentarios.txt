@@ -1,0 +1,16 @@
+Videos
+    - Usar a ferramete Handbrake para converter os vídeos para o formato desejado, geralmente MP4, ou mp4v
+    - Usar a ferramenta Handbrake para colocar formato web (Vimeo/YouTube) e diminuir o tamanho do vídeo
+    - Não hospedar videos no seu prorpio site se for igual ou maior que 1080p 
+    - Utilizar todos os formatos no seu site pois o navegador pode não ser compatível com o formato desejado, 
+    - Eu acredito que mp4 eh o mais compatível
+    - Atributo Source -> mesma coisa que o source de imagem, mas para vídeos, ordem importa e tals...
+    - Não esquecer o type ->Têm na apostila
+    - Atributo poster -> imagem que aparece antes do vídeo começar a tocar
+
+    Hospedagem de vídeos no YouTube
+
+        Características
+            - Não gasta banda de onde seu site está hospedado
+            - Infelizmente o video ficara disponivel p todo munod ver, senão quiser tera que hospedar seu video em alguma outra plataforma como Vimeo
+            - É somente copiar o incorporar do vídeo desejado e colar no seu site (iframe ... )

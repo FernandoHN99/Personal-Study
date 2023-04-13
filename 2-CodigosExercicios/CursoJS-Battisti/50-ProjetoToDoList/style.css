@@ -1,0 +1,17 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-image: linear-Gradient(to right, #511449, #984056, #E7696A);
+}
+
+#tasks-container{
+    text-align: center;
+}
+
+#tasks-header{
+    margin-top: 50px;
+}
+
+h2{
+    color: white;
+    font-size:1,3em;
+}

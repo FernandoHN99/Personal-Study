@@ -1,0 +1,9 @@
+* Tags 'b 'e 'strong' -> servem para ressaltar o texto/deixar em negrito
+    - 'b'      -> nao tem semantica enquanto 
+    - 'strong' -> Com semantica
+    - Deixar de usar 'b' (recomendação guanabara)
+
+* tags 'i' e 'em' -> servem para deixar o texto em italico
+    - i    -> Sem  semantica enquanto 
+    - 'em' -> Com semantica tem
+    - Deixar de usar 'i' (recomendação guanabara)

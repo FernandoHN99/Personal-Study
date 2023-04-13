@@ -1,0 +1,35 @@
+Picture 
+
+    img:
+        - Obrigatório
+        - utiliza a imagem padrão independente do tamanho da tela
+
+    source:
+        - opcional
+        - Orem do Source importa, então começar com a primeira linha sempre com o menor numero de pixels e embaixo a segunda linha com o maior numero de pixels, e assim por diante.
+
+Audio
+
+    source
+        - Opcional
+        - Orem do Source importa, então vai tentar iniciar o primeiro audio, se não conseguir vai tentar o segundo e assim por diante. No exemplo do video se nenhum for encontrado vai mostrar p paragrafo/mensagem "Infelizmente seu seu navegador não consegue reproduzir audio"
+
+    preload = "auto" | "metadata" | "none"
+        - Opcional (default = "auto")
+        - auto: considera carregar o site depois de carregar todo audio (perigoso)        
+        - metadata: carrega informaçoes crucicais do audio, duracção, etc...
+        - none: não carrega nada do audio
+
+    controls = "controls"
+        - Opcional
+        - Adiciona os controles de audio
+
+    autoplay = "autoplay"
+        - Opcional
+        - Inicia o audio automaticamente
+
+    loop = "loop"
+        - Opcional
+        - Repete o audio automaticamente
+
+    

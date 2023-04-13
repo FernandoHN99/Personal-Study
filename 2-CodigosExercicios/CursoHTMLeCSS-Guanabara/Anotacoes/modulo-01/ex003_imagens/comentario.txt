@@ -1,0 +1,14 @@
+Sites para fotos liberadas:
+    -pexels
+    -unsplash
+
+Formatos de imagem:
+    -jpg (JPEG) -> Alta compactação, Não suporta transparência, Mais leve, Menor qualidade
+    -png        -> Baixa compactação, Suporta Transparência, Mais pesado, Mior qualidade
+    -gif
+    -svg
+
+Formatos de Imagens
+    Plano de fundo -> +- 1200 ate 1500
+    Icones        -> +- 400 ate 600 (Depende da sua necessidade)
+    Resolução -> Não mexer ou sempre abaixar, pois não difere em nada se aumentar além do padrão, somente deixa a imagem mais pesada

@@ -1,0 +1,11 @@
+Links Externos
+    target="_blank" rel="external" -> Abrir links outra aba 
+
+Links internos
+    href="pag002.html" rel="next" -> Link para próxima página dentro do site (rel-> somente semantica/mecanismo de busca)
+    
+Download
+    - usar o template conforme o tipo do arquivo:
+        https://www.iana.org/assignments/media-types/media-types.xhtml
+    - Exemplo:
+         <li><a href="livro/meulivro.pdf" download="meulivro.pdf" type="application/pdf">Baixar o livro em PDF</a></li>
