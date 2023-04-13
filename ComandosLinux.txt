@@ -1,0 +1,106 @@
+************ Comandos Básicos Linux ************
+
+1-) Atualiza os Pacotes do Sistemas
+	sudo dnf check-update
+	
+2-) Atualiza os pacotes que tenham novas dependências
+	sudo dnf upgrade
+
+3-) Procurar Programa / Incluí Procura a descrição do pacote
+	dnf search nome_do_arquivo / dnf search all nome_do_aquivo
+
+4-) Ver "Sobre" o pacote desejado / Listar as dependências para aquele pacote
+	dnf info pacote / dnf repoquery –requires pacote
+	
+4-) Instalar Pacotes
+	sudo dnf install pacote1 pacote2
+	
+5-) Desinstalar Pacotes
+	sudo dnf remove pacote
+
+6-) Instalar um pacote dentro de uma pasta (rpm é o tipo de empacotamento usado no Fedora)
+	sudo dnf install pacote.rpm
+	
+************ Comandos .tar ************
+
+archive.tar/.tar.gz
+	tar -xvf archive.tar
+	
+************ Comandos Mudar Posição das Extenções Top Bar ************
+
+1. Navegar para:
+	/home/FernandoHN/.local/share/gnome-shell/extensions/
+
+2. Porcurar pela pasta desejada a partir do nome dela q contem o nome da extensao
+
+3. Editar arquivo extensio.js
+	addToStatusArea('left' or 'center' or 'right')
+
+********************** Repositorios **********************
+
+1. Listar Repositorios
+	dnf repolist
+	OR
+	cd /etc/yum.repos.d + ls
+	
+2. Remover Repositorio
+	sudo rm /etc/yum.repos.d/<repositorio_nome>
+
+3. Desabilitar Repositorio
+	dnf config-manager --set-disabled <repositorio_nome>
+
+4. habilitar um Repositorio
+	dnf config-manager --set-enabled fedora-extras
+	
+5. Adicionar um Respositorio
+	dnf config-manger --add-repo <repositorio_nome>
+	
+******************* Pastas *******************
+1. Criar Pasta
+	mkdir <nomeDaPasta>
+
+2. Remover Pasta
+	rm -r <pathToPasta>
+	
+3. Mover Pasta
+	mv <pathToPasta> <pathDestino>	
+		
+4. Copiar Pasta para outro local
+	cp -r <pathToPasta> <pathDestino>
+
+***************** Arquivos *******************
+1.Criar Arquivo
+	cat > <nomeDoArquivo.extensaoDesejada>
+		"Escrever conteúdo do arquivo"
+			Ctrl + D (2x)
+			
+2. Remover Arquivo
+	rm <pathTofileName>
+	
+3. Mover Arquivo(s)
+	mv <pathTofileName1> <pathTofileName2> <pathDestino>
+	
+4. Copiar Arquivos
+	cp <pathTofileName1> <pathTofileName2> <pathDestino>
+	
+***************** Permissões **************
+ls -l (permisções links criador grupo etc...)
+
+chmod <numeracao> <arquivo ou diretório>
+	chmod 777 file1 (w->1 r-> 2 x->4)
+
+sudo mount <PathToFile.iso> <PathTodDestinationFolder>
+
+sudo mount -o remount,rw /dev/loop1
+
+********************* Kernel*********************
+1. Mostrar Kernel`s Versions
+	uname -a
+	rmp -q kernel
+	uname -r
+	
+2. Pacotes e repositórios instaldados
+	rpm -qa | grep <nome>
+******************** Links Simbólicos ************
+1. Criar Link Simbólico
+ln -s <caminho para o arquivo/diretório a ser vinculado> <caminho do link a ser criado>

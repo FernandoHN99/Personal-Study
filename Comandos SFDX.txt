@@ -1,0 +1,5 @@
+*************Comandos - sfdx*************
+
+sfdx force:source:retrieve -p force-app 	(Retrieve de td)
+sfdx force:apex:log:list 					(Show all logs)
+sfdx force:apex:log:get --logid <id> 		(Get specific log) 

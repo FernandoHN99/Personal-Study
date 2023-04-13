@@ -1,0 +1,59 @@
+***********Automação de Código para rodar em Servidor Heroku***********
+
+----------Pré-requisitos---------------
+
+1-) Criar conta no servidor Heroku
+
+2-) Baixar o Heroku CLI
+
+3-) Baixar o Git
+
+----------Passo à Passo na IDLE para jogar código para o servidor---------------
+4-) Criar Ambiente Virtual e jogar código lá dentro
+
+5-) Criar dois arquivos dentro do ambiente virtual
+		5.1Procfile (Criar de forma manual) 
+			Conteúdo --> worker: Nome da linguagem + path a partir do arquivo Procfile até o código .py
+			"worker: python main.py" (Exemplo)
+			
+		5.2requirements (Criar arquivo + conteúdos com o comando abaixo)
+			pip freeze > requirements.txt (Sempre assim)
+	
+5-)	Criar um novo 'app' no servidor
+ 
+6-) Rodar comando de Login Heroku e Logar na sua conta criada em 1
+		 heroku login
+		 
+7-)	Comandos Git:
+		git init
+		heroku git:remote -a testeservidor (testeservidor --> neste caso eh o nome do meu app criado em 5)
+		git add .
+		git commit -am "nomeDoCommit" (Atenção: -am não -m)
+		git push heroku master
+		
+----------Ativar o agendador Site da Hiroku---------------
+
+8-) Acessar aba "Resources"
+		Clicar botão ao lado de Worker para ativar manualmente
+			Após isso Código Ativado
+			
+9-)Clicar em Add-ons
+		Digitar Advanced Scheduler 
+			Em Plan name escolher o plano desejado (Free)
+				Confirmar o plano
+					Após isso o agendador para o código pode ser executado automaticamente estará instalado
+					
+10-) Clicar no Advanced Scheduler, no caso isso te levará para outra página
+		10.1 Clicar em "Create First Trigger"
+			Preencher:
+				Nome (Qualquer)
+				Command (nome do Worker passo 5.1 - Exemplo: python main.py)
+				Timezone
+		10.2 Clicar em Recurring e selecionar a frequência/dias desejado
+			Pronto! O servidor está programado para rodar automaticamente seu código!
+				
+11-)Voltar à pagina anterior e clicar em "More"
+		Clicar em "View Logs"
+			Após isso será mostrado o log(output) do seu código a cada vez q ele é rodado!
+					
+		
