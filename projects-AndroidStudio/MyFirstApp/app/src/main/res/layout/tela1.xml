@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:text="Medidas de um Círculo e uma Esfera "
+        android:textAlignment="center"
+        android:textColor="@color/purple_200"
+        android:textSize="35sp"></TextView>
+
+    <EditText
+        android:id="@+id/inputRaio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15sp"
+        android:hint="Digite aqui o raio em cm"
+        android:inputType="numberDecimal"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:textColor="@color/purple_200"
+        android:textColorHint="@color/purple_200">
+
+    </EditText>
+
+    <TextView
+        android:id="@+id/resultPerimetro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:autoSizeMaxTextSize="1sp"
+        android:text="Perímetro:  "
+        android:textColor="@color/purple_200"
+        android:textSize="25sp"></TextView>
+
+
+    <TextView
+        android:id="@+id/resultArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="    Área:       "
+        android:textColor="@color/purple_200"
+        android:textSize="25sp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/resultCasca"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="   Casca:     "
+        android:textColor="@color/purple_200"
+        android:textSize="25sp"></TextView>
+
+    <TextView
+        android:id="@+id/resultVolume"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="  Volume:   "
+        android:textColor="@color/purple_200"
+        android:textSize="25sp"></TextView>
+
+    <Button
+        android:id="@+id/buttonCalc"
+        android:layout_width="200sp"
+        android:layout_height="60sp"
+        android:layout_gravity="center"
+        android:layout_margin="3sp"
+        android:background="@color/purple_200"
+        android:onClick="calcularResultado"
+        android:text="Calcular"
+        android:textSize="30sp"
+        android:textStyle="bold">
+
+    </Button>
+
+</LinearLayout>

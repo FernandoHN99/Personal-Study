@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Energia"
+        android:textSize="30sp">
+    </TextView>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/ra1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="j->kj"
+            android:checked="true">
+        </RadioButton>
+
+        <RadioButton
+            android:id="@+id/ra2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="kj>j"
+            android:checked="false">
+        </RadioButton>
+
+        <RadioButton
+            android:id="@+id/ra3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="j->cal"
+            android:checked="false">
+        </RadioButton>
+
+        <RadioButton
+            android:id="@+id/ra4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="cal->j"
+            android:checked="false">
+        </RadioButton>
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="De j:"
+            android:textSize="30sp"
+            android:layout_weight="1">
+        </TextView>
+
+        <EditText
+            android:id="@+id/textodeedit"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            android:inputType="numberDecimal"
+            android:textSize="30sp"
+            android:layout_weight="1">
+        </EditText>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textopara"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:text="Para kj:"
+        android:textSize="30sp">
+    </TextView>
+
+    <Button
+        android:id="@+id/converter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Converter"
+        android:textSize="20sp"
+        android:layout_marginTop="50sp">
+    </Button>
+
+    <Button
+        android:id="@+id/voltar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Voltar"
+        android:textSize="20sp">
+    </Button>
+
+</LinearLayout>
