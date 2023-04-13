@@ -1,0 +1,34 @@
+*************Criando Ambiente Virtual*************
+
+1-a) Criar uma pasta/diretório qualquer
+
+1-b) Criar arquivo .gitignor, para git ignorar arquivos
+	https://mrkandreev.name/snippets/gitignore-generator/#Python
+
+2-) Abrir cmd nessa pasta
+
+3-) Instalar virtual virtualenv (Somente necessário uma vez):
+		pip install virtualenv
+
+4-) Criar uma Sub-Pasta para o Ambiente Virtual
+		py -m venv ./NomeDaSubPasta
+		
+********************* WINDOWS *********************************
+
+5-) Entrar dentro da sub-pasta "Script" criada
+		cd /NomeDaSubPasta
+		cd /Scrripts
+
+6-) Ativar o activate.bat
+		activate.bat
+	
+7-) Ambiente Virtual Criado Ativado!
+		Vai estar com a indicação (venv) no terminal
+		
+********************* LINUX *********************************
+
+5-) Entrar na pasta bin e rodar OU 
+	source activate
+	
+6-) Para sair do Ambiente Virtual dentro de bin
+	deactivate

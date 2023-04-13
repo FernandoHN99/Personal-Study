@@ -1,0 +1,32 @@
+*************Transformando arquivos .py em Executável*************
+
+8-) Entrar na Pasta criada no passo 4-)
+		cd ..
+
+8-) Jogar seu código Python na pasta/diretorio atual
+
+10-) Baixar todas as bibliotecas utilizadas em seu código
+		pip install ...
+
+11-) Baixar biblioteca pyinstaller
+		pip install pyinstaller
+
+12-) Executar comando que trasnforma arquivo .py em .exe
+		pyinstaller --onefile arquivo.py    (opcao 1)
+		pyinstaller --onefile -w arquivo.py (opcao 2: em caso do codigo possuir alguma interface com o usuario)
+
+13-) Serão Criadas:
+	1 Pasta chamada build (Pode apagar)
+	1 Pasta chamada dist  (Arquivo .exe dentro dela)
+	1 arquivo .spec       (Pode apagar)
+
+14-) Arquivo .exe Criado!
+		Vai estar dentro da pasta dist
+
+*************Comandos Auxiliares*************
+
+	pip freeze (Mostra bibliotecas instaladas)
+
+
+
+
