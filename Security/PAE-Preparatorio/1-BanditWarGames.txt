@@ -1,0 +1,58 @@
+
+1---------------------------------------------------
+ 1.1 ssh bandit0@bandit.labs.overthewire.org -p 2220
+ 1.2  bandit0
+
+NH2SXQwcBdpmTEzi3bvBHMM9H66vVXjL
+
+2----------------------------------------------------
+
+ 2.1 ssh bandit1@bandit.labs.overthewire.org -p 2220
+ 2.2 NH2SXQwcBdpmTEzi3bvBHMM9H66vVXjL
+ 2.3 cat ./-
+
+ rRGizSaX8Mk1RTb1CNQoXTcYZWU6lgzi
+
+
+3----------------------------------------------------
+
+3.1 ssh bandit2@bandit.labs.overthewire.org -p 2220
+3.2 rRGizSaX8Mk1RTb1CNQoXTcYZWU6lgzi
+3.3 cat spaces\ in\ this\ filename 
+
+
+aBZ0W5EmUfAf7kHTQeOwd8bauFJ2lAiG
+
+
+
+4----------------------------------------------------
+
+4.1 ssh bandit3@bandit.labs.overthewire.org -p 2220
+4.2 aBZ0W5EmUfAf7kHTQeOwd8bauFJ2lAiG
+4.3 cd inhere
+4.4 cat .hideen
+
+2EW7BBsr6aMMoJ2HjW067dm8EgX26xNe
+
+5----------------------------------------------------
+
+5.1 ssh bandit4@bandit.labs.overthewire.org -p 2220
+5.2 2EW7BBsr6aMMoJ2HjW067dm8EgX26xNe
+5.3 cd inhere/
+5.4 cat ./-file0*
+
+lrIWWI6bB37kxfiCQZqUdOIYfr6eEeqR
+
+6----------------------------------------------------
+
+6.1 ssh bandit5@bandit.labs.overthewire.org -p 2220
+6.2 lrIWWI6bB37kxfiCQZqUdOIYfr6eEeqR
+6.3 find . -size 1033c ! -executable
+6.4 cat ./maybehere07/.file2
+
+P4L4vucdmLnm8I7Vl7jG1ApGSfjYKqJU
+
+7----------------------------------------------------
+
+7.1 ssh bandit6@bandit.labs.overthewire.org -p 2220
+7.2 lrIWWI6bB37kxfiCQZqUdOIYfr6eEeqR
