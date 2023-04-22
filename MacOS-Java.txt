@@ -1,0 +1,10 @@
+Lista verões do Java no MacOS:
+	/usr/libexec/java_home -V
+
+Selecionar a versão desejada:
+
+	(Exemplo: genérico) export JAVA_HOME=`/usr/libexec/java_home -v <version>`
+
+	(Exemplo: versão 17)export JAVA_HOME=`/usr/libexec/java_home -v 17`
+
+
