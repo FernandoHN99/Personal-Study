@@ -1,0 +1,7 @@
+Em resumo, um cluster Kubernetes é composto por vários nós que executam os pods, que são conjuntos de contêineres que executam as aplicações. A inteligência por trás do cluster é o control plane, que é responsável por gerenciar todo o estado do cluster e garantir que as aplicações sejam executadas de forma eficiente e escalável.
+
+Em um cluster Kubernetes, temos vários nós que são geralmente máquinas físicas ou virtuais que executam o software do Kubernetes. Cada nó é responsável por executar vários pods, que por sua vez são conjuntos de um ou mais contêineres que executam as aplicações.
+
+Cada pod é executado em um único nó e é isolado de outros pods em termos de recursos de rede e armazenamento. Os contêineres dentro de um pod compartilham o mesmo espaço de rede e armazenamento e podem se comunicar entre si através de um endereço IP compartilhado.
+
+O control plane é a inteligência por trás do Kubernetes e é responsável por gerenciar o estado do cluster, incluindo a programação de pods em nós, o monitoramento de recursos, a garantia de alta disponibilidade e a execução de atualizações. O control plane é composto por vários componentes, como o API Server, o Scheduler, o Controller Manager e o etcd.
