@@ -2,7 +2,7 @@
 
 1-a) Criar uma pasta/diretório qualquer
 
-1-b) Criar arquivo .gitignor, para git ignorar arquivos
+1-b) Criar arquivo .gitignore, para git ignorar arquivos
 	https://mrkandreev.name/snippets/gitignore-generator/#Python
 
 2-) Abrir cmd nessa pasta
