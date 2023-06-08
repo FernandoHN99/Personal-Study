@@ -1,7 +1,7 @@
 // ********* Funções de Primeira Classe (First-class function) *********
 
 // São tratadas como uma variável (Já vimos)
-const mensagem = ()=> "Olá, "
+const mensagem = () => "Olá, "
 const saudacao_01 = (nome) => {console.log(mensagem() + nome) }
 saudacao_01("Fernando") //Invocar
 
