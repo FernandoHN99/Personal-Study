@@ -1,0 +1,111 @@
+# ---------------- ChatGPT ---------------- 
+alias chat='shell-genie ask'
+
+# ---------------- Geral ---------------- 
+
+alias mkdir='mkdir -pv'
+
+java-change() {
+  export JAVA_HOME=$(/usr/libexec/java_home -v $1)
+  echo "Java Version: $(java --version)"
+}
+
+# ----------------- Git ----------------------
+
+gitupdt() {
+  if [ $# -eq 0 ]; then
+    message="update automático"
+  else
+    message="$1"
+    shift
+    while [ $# -gt 0 ]
+    do
+      message="$message $1"
+      shift
+    done
+  fi
+
+  git add .
+  git commit -m "$message"
+  git push origin "$(git branch --show-current)"
+}
+
+
+
+# ---------------- Redes ---------------- 
+
+# -- 1
+
+output=$(ifconfig | awk 'BEGIN { print "Interface\tIPv4\t\t\t\tIPv6\t\t\t\tStatus\t" } /^[a-z]/ { iface=$1; next } /inet / { ipv4=$2 } /inet6 / { ipv6=$2; next } /status: / { status=$2; tab = "\t"; if (length(iface) > 7) { tab = "" }; print iface "\t\t" ipv4 "\t\t" ipv6 "\t\t" status tab }')
+
+alias ips='echo "$output" | grep active -w'
+
+# -- 2
+
+varEn0=$(ifconfig en0 | grep -w inet | awk '{print $2}')
+varEn5=$(ifconfig en5 2> /dev/null | grep -w inet | awk '{print $2}')
+ 
+alias ports='nmap -v -sT $varEn0 $varEn5 | grep open | grep -v Discovered | sort | uniq'
+
+alias ports2='lsof -iTCP -sTCP:LISTEN | grep LISTEN'
+
+
+
+# ---------------- Security ---------------- 
+
+# 1-----
+alias hash-identifier-text='nth --text'
+alias hash-identifier-file='nth --file'
+
+
+# 2-----
+hash-gen-str() {
+  echo -n "$2" | openssl dgst "-$1"
+}
+
+hash-gen-file() {
+  local hash_hex=$(openssl dgst "-$1" -hex "$2" | awk '{ print $2 }')
+  echo "$hash_hex"
+}
+
+# 3-----
+
+hash-hack-str() {
+   tmpfile=$(mktemp)
+   echo -n "$2" > "$tmpfile"
+
+   # Executar o Hashcat com o arquivo temporário
+   hash-hack-file $1 "$tmpfile"
+
+   # Remover o arquivo temporário
+   rm "$tmpfile"
+}
+
+
+hash-hack-file() {
+  caminho_rockyou="/Users/fernandohenriques/Documents/Security/rockyou.txt"
+
+  if [ -f "$caminho_rockyou" ] && [ -f "$2" ]; then
+
+    if [[ "$1" =~ ^[0-9]+$ ]]; then
+      saida01=$(hashcat -m "$1" --show "$2")
+
+      if [ -n "$saida01" ]; then
+        echo $saida01
+      else
+        hashcat --quiet -a 0 -m "$1" "$2" "$caminho_rockyou"
+      fi
+
+    else
+        echo "!!! UTILIZE NUMEROS !!!"
+        hashcat --help | grep -A 14 'Hash modes'
+    fi
+
+  else
+    echo "Arquivo não existe"
+  fi
+}
+
+
+
+
