@@ -1,0 +1,33 @@
+.container {
+    margin: auto;
+    height: 500px;
+    width: 500px;
+    
+    background-color: blueviolet;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* Define três colunas de tamanho igual */
+    grid-template-rows: 1fr 1fr 1fr; /* Define três linhas de tamanho igual */
+    grid-gap: 10px; /* Define um espaçamento de 10 pixels entre as células */
+  }
+
+  .item{
+    background-color: brown;
+    border-color: black;
+    border-style: solid;
+  }
+  
+  .i1 {
+    grid-column: 1 ; /* Item 1 ocupará a primeira coluna */
+    grid-row: 1 ; /* Item 1 ocupará a primeira linha */
+  }
+  
+  .i2 {
+    grid-column: 2; /* Item 2 ocupará a segunda coluna */
+    grid-row: 2 ; /* Item 2 ocupará a segunda linha */
+  }
+  
+  .i3 {
+    grid-column: 3; /* Item 3 ocupará a terceira coluna */
+    grid-row: 3; /* Item 3 ocupará a terceira linha */
+  }
+  
