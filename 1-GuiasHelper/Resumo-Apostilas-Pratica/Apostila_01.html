@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">  <!-- Importacao do CSS do Bootstrap versao 4.4 -->
+    
+    <!-- Importacao do CSS do Bootstrap versao 4.4 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> 
+    
     <title>Apostila 01</title>
 </head>
 <body>
@@ -24,7 +26,6 @@
         <!-- As classes display são idealmente aplicadas a tags do tipo h1, h2 e assim por diante.  -->
 
         <h1 class="display-5">Utilizando o display</h1>
-
         <h1 class="display-1">Display 1</h1>
         <h1 class="display-2">Display 2</h1>
         <h1 class="display-3">Display 3</h1>
@@ -166,6 +167,14 @@
 
         <br><br>
 
+        <p class="text-sm-right">Pequeno(sm): 576 &gt;= largura  &gt;768</p>
+        <p class="text-md-right">Médio (md) 768 &gt;= largura  &gt;992</p>
+        <p class="text-lg-right">Grande (lg) 992 &gt;= largura &gt;1200 </p>
+        <p class="text-xl-right">Extra Grande (xl) &gt;= 1200px </p>
+
+        <br><br>
+
+
     <!-- ********************************** Lidando com a propriedade display ********************************** -->
 
         <!-- As classes do Bootstrap que lidam com a propriedade display começam com d-. Alguns valores possíveis para essa 
@@ -204,23 +213,23 @@
         <!--float geral-->
         <div class="float-right">Flutuando para a direita</div>
         <br>
-        <div class="float-left">Flutuando para a esquerda</div>
+        <div class="float-left ">Flutuando para a esquerda</div>
         <br>
         
         <!-- float responsivo-->
         <div class="float-sm-right float-md-left float-lg-right float-xl-left">Float responsivo</div>
+        <p>Onde fica esse texto1?</p>
         
-        <!-- -	A propriedade float tem a seguinte característica. Após ter sido aplicada a um elemento, se o próximo elemento 
-            couber ao lado do primeiro, ele será posicionado ali. Talvez isso seja desejável, talvez não. Se for desejável, 
-            não é preciso fazer nada. Caso contrário, há uma classe do Bootstrap chamada clearfix que serve para “remover” 
-            o efeito float, indicando que os próximos elementos não devem se encaixar junto àqueles aos quais float foi aplicado. 
-            Veja o exemplo: -->
+        <!-- -	A propriedade float tem a seguinte característica. Após ter sido aplicada a um elemento, se o próximo elemento couber ao lado do primeiro, ele será posicionado ali. Talvez isso seja desejável, talvez não. Se for desejável,não é preciso fazer nada. Caso contrário, há uma classe do Bootstrap chamada clearfix que serve para “remover” o efeito float, indicando que os próximos elementos não devem se encaixar junto àqueles aos quais float foi aplicado. 
+            OBS: clearfix eh usando na div que ira conter o elemento q tera float
+            
+        Veja o exemplo: -->
         
-        <div style="background-color: blue;"> <!-- class="clearfix"  -->
-            <button class="float-left">Esquerda</button>
+        <div style="background-color: blue;" > <!-- class="clearfix"  -->
+            <button class="float-left ">Esquerda</button>
             <button class="float-right">Direita</button>
         </div>
-        <p>Onde fica esse texto1?</p>
+        <p >Onde fica esse texto1?</p>
         <p>Onde fica esse texto2?</p>
 
         
@@ -285,10 +294,11 @@
         
         OBS: Se nenhuma delas for especificada a medida será aplicada nos quatro lados -->
 
-        <h1 class="display-5">Padding e Margin</h1>
+        <h1 class="display-5">Padd  ing e Margin</h1>
 
         <p class="m-0 bg-primary">Sem margem</p>
-        <p class="ml-3 bg-primary">Margem à esquerda</p>
+        <p class="ml-5 bg-primary">Margem à esquerda</p>
+
         <p class="my-5 bg-primary">Margem vertical</p>
         
         <p class="pl-3 bg-primary">padding à esquerda</p>
@@ -321,7 +331,7 @@
         </p>
         <p class="bg-primary p-2 w-100"> 100%
         </p>
-        
+
         <!-- -	Analogamente, as classes para controle de altura começam com o prefixo h- seguido de um número que indica o 
             percentual desejado. Note que, no caso da altura, é preciso que os elementos estejam dentro de um elemento com 
             altura definida, para que o percentual faça sentido. -->
@@ -329,9 +339,9 @@
             <div style="height: 400px; border: 1px solid #CCC">
                 <p class="bg-warning h-25 d-inline-block">25%</p>
                 <p class="bg-warning h-50 d-inline-block">50%</p>
-            <p class="bg-warning h-75 d-inline-block">75%</p>
-            <p class="bg-warning h-100 d-inline-block">100%</p>
-        </div>
+                <p class="bg-warning h-75 d-inline-block">75%</p>
+                <p class="bg-warning h-100 d-inline-block">100%</p>
+            </div>
     
         <br><br>
 
@@ -357,8 +367,14 @@
     <!-- ********************************** Importações JavaScript (Ordem importa) ********************************** -->
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>  <!-- Importacao do jquery do proprio jquery versao 3 (tem que ser a versao minified, nao poder ser a slim)-->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>  <!-- Importacao do jquery (JS) do bootstrap (não pode ser a versao slim e sim o popper) -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> <!-- Importacao do JS do Bootstrap -->
+    
+    <!-- Importacao do jquery do proprio jquery versao 3 (tem que ser a versao minified, nao poder ser a slim)-->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>  
+
+    <!-- Importacao do jquery (JS) do bootstrap (não pode ser a versao slim e sim o popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>  
+    
+    <!-- Importacao do JS do Bootstrap -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script> 
 </body>
 </html>

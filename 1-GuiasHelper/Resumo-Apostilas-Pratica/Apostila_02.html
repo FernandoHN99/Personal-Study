@@ -94,11 +94,12 @@
                 <div class="col-12 border">
                     12 colunas
                 </div>
+                
             </div>
 
             <!-- uma linha com um único elemento ocupando 2 colunas -->
             <div class="row">
-                <div class="col-2 mt-2 border">
+                <div class="col-1 mt-2 border">
                     2
                 </div>
             </div>
@@ -112,11 +113,11 @@
             se a tela for pelo menos lg, cada uma requer apenas 3 colunas, ficando portanto no total 4, uma do lado da outra -->
 
         <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-3 mt-2 border">
-                sm: 12, md: 6, lg:3
+            <div class="col-sm-12 col-md-6 col-lg-5 mt-2 border">
+                sm: 12, md: 6, lg:5
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-3 mt-2 border">
-                sm: 12, md: 6, lg:3
+            <div class="col-sm-12 col-md-6 col-lg-4 mt-2 border">
+                sm: 12, md: 6, lg:4
             </div>
             <div class="col-sm-12 col-md-6 col-lg-3 mt-2 border">
                 sm: 12, md: 6, lg:3
@@ -187,7 +188,7 @@
             
         <h1 class="display-5">Largura igual com empilhamento até um breakpoint desejado</h1>
         
-        <div class="container mt-2 p-5 border border-dark"></div>
+        <div class="container mt-2 p-5 border border-dark">
             <div class="row">
                 <div class="col-md border mt-2">
                     md
@@ -239,12 +240,11 @@
         <div class="container mt-2 p-5 border"> 
 
             <div class="row">
-                <div class="col-md-6 offset-md-3 border my-2">
+                <div class="col-md-6 offset-lg-3 border my-2">
                     col: 6, off: 3
                 </div>
             </div>
 
-            
             <div class="row">
                 <div class="col-md-4 offset-md-2 border my-2">
                     col:4, off:2
@@ -279,14 +279,20 @@
                 <div class="col border">
                     top (start de cima para baixo)
                 </div>
+                <div class="col border">
+                    top (start de cima para baixo)
+                </div>
+                
             </div>
             
             <div class="row align-items-center border bg-light my-2" style="height:200px">
                     <div class="col border">center</div>
                     <div class="col border">center</div>
+                    <div class="col border">center</div>
             </div>
             
             <div class="row align-items-end border bg-light my-2" style="height:200px">
+                <div class="col border">bottom</div>
                 <div class="col border">bottom</div>
                 <div class="col border">bottom</div>
             </div>
@@ -319,18 +325,18 @@
         <div class="container mt-2 p-5 border">
 
             <div class="row justify-content-start my-2">
-                <div class="col-4 border">start</div>
-                <div class="col-4 border">start</div>
+                <div class="col-4 border">esquerda para direita</div>
+                <div class="col-4 border">esquerda para direita</div>
             </div>
         
             <div class="row justify-content-center my-2">
-                <div class="col-4 border">center</div>
-                <div class="col-4 border">center</div>
+                <div class="col-4 border">centro</div>
+                <div class="col-4 border">centro</div>
             </div>
         
             <div class="row justify-content-end my-2">
-                <div class="col-4 border">end</div>
-                <div class="col-4 border">end</div>
+                <div class="col-4 border">final</div>
+                <div class="col-4 border">final</div>
             </div>
 
             <div class="row justify-content-around my-2">
@@ -354,13 +360,37 @@
 
         <div class="container mt-2 p-5 border">
 
-            <!-- flex-row-reverse da direita para a esquerda -->	
-            <div class="d-flex flex-column bg-light border my-2">
-                <div class="p-4 border mx-2">1</div>	
-                <div class="p-4 border mx-2">2</div>	
-                <div class="p-4 border mx-2">3</div>	
-            </div>	
-            
+            <div class="row">
+                <!-- d-flex: display: flex; -->
+                <!-- padrão row da esquerda para a direita -->
+                <div class="d-flex bg-light border my-2">
+                    <div class="p-4 border mx-2">1</div>
+                    <div class="p-4 border mx-2">2</div>
+                    <div class="p-4 border mx-2">3</div>
+                </div>
+
+                <!-- flex-row-reverse da direita para a esquerda -->
+                <div class="d-flex flex-row-reverse bg-light border my-2">
+                    <div class="p-4 border mx-2">1</div>
+                    <div class="p-4 border mx-2">2</div>
+                    <div class="p-4 border mx-2">3</div>
+                </div>
+
+                <!-- flex-column: eixo principal se torna o vertical -->
+                <!-- posicionamento de cima para baixo -->
+                <div class="d-flex flex-column bg-light border my-2">
+                    <div class="p-4 border mx-2">1</div>
+                    <div class="p-4 border mx-2">2</div>
+                    <div class="p-4 border mx-2">3</div>
+                </div>
+
+                <!-- flex-column-reverse: de baixo para cima -->
+                <div class="d-flex flex-column-reverse bg-light border my-2">
+                    <div class="p-4 border mx-2">1</div>
+                    <div class="p-4 border mx-2">2</div>
+                    <div class="p-4 border mx-2">3</div>
+                </div>
+            </div>
         </div>
             
         <br><br>
