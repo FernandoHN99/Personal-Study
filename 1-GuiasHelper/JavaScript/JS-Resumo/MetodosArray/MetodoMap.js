@@ -35,7 +35,8 @@ console.log(notas_normalizadas)
 
 
 // ------------------- Forma 02: Mais Reduzida------------------------------
-var maior_nota = Math.max(...estudantes.map(i => i.nota))
+
+var maior_nota = Math.max(...estudantes.map(i=> i.nota))
 console.log(maior_nota)
 
 var notas_normalizadas = estudantes.map(
