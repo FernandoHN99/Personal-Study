@@ -1,0 +1,67 @@
+
+
+------------------  Descricao ------------------
+Em resumo, um cluster Kubernetes é composto por vários nós que executam os pods, que são conjuntos de contêineres que executam as aplicações. A inteligência por trás do cluster é o control plane, que é responsável por gerenciar todo o estado do cluster e garantir que as aplicações sejam executadas de forma eficiente e escalável.
+
+Em um cluster Kubernetes, temos vários nós que são geralmente máquinas físicas ou virtuais que executam o software do Kubernetes. Cada nó é responsável por executar vários pods, que por sua vez são conjuntos de um ou mais contêineres que executam as aplicações.
+
+Cada pod é executado em um único nó e é isolado de outros pods em termos de recursos de rede e armazenamento. Os contêineres dentro de um pod compartilham o mesmo espaço de rede e armazenamento e podem se comunicar entre si através de um endereço IP compartilhado.
+
+O control plane é a inteligência por trás do Kubernetes e é responsável por gerenciar o estado do cluster, incluindo a programação de pods em nós, o monitoramento de recursos, a garantia de alta disponibilidade e a execução de atualizações. O control plane é composto por vários componentes, como o API Server, o Scheduler, o Controller Manager e o etcd.
+
+------------------  Arquitetura ------------------
+
+Kubernets é uma ferramenta para orquestração de containers, ou seja, ele gerencia os containers.
+
+Arquitetura Geral do Kubernets:
+   Ao executar Kubernets obtemos um Cluster
+   Cluster: Conjunto de máquinas trabalhadoras (no mínimo 1 máquina trabalhadora)
+      Nó: Máquina trabalhadora
+         Nós executam pods.
+      Pods: conjunto de containers em execução.
+      Control plane: camada de orquestração que expõe uma API para implantar e gerenciar os contêineres que estão dentro dos pods
+
+Arquitetura Control plane:
+   kube-apiserver: Desempenha o papel de front end do control-plane expondoa API do kubernets
+
+   etcd: Mecanismo de armazenamento baseado em pares chave/valor. Usado para armazenar dados referentes ao funcionamento do cluster.
+
+   kube-scheduler: Responsável por detectar novos Pods para os quais um nó ainda não foi alocado e providenciar a alocação.
+
+   kube-controller-manager: Executa controllers. Um controller verifica constantemente o estado do cluster e executa ações necessárias para alterar seu estado atual, levando-o para o estado desejado. Um exemplo de controller é o Node controller. Ele é responsável por informar quando um nó se torna inoperante.
+
+   cloud-controller-manager: É um tipo de control plane que viabiliza a conexão entre o cluster do kubernets e um provedor de computação em nuvem. Ele separa os componentes que interagem com o provedor de nuvem daqueles que interagem somente com o cluster local.
+
+Arquitetura sobre nós:
+
+   kubelet: Responsável por garantir que os contêineres estão em execução em um Pod, de acordo com especificações obtidas em PodSpecs. Um kubelet não se preocupa com contêineres em execução que eventualmente não tenham sido criados pelo kubernets
+
+   kube-proxy: Implementa a ideia de Service do kubernets. Trata-se de uma maneira de expor um conjunto de Pods como um serviço em rede
+
+   Container runtime: É o software responsável por executar os contêineres (dockers)
+
+---------------------- EXPLICACAO PASSO A PASSO ----------------------
+- fazer o código fonte
+- criar conta no dockerhub
+- criar dockerfile e dockerignore
+- criar a imagem com o docker build (Sempre criar image name com: <dockerhub username>/<name>) (referencia o codigo-fonte criado)
+- criar o deployment.yaml (referencia a imagem criada, se omitir o tag, ele pega a latest)
+- criar o codigo do servico junto ao arquivo do deployment.yaml
+- kubectl apply -f <file deployment name>
+- kubectl rollout restart deployment <file deployment name> (Se houver uma mudanca no codigo fonte, necessario fazer o build da nova imagem relacionado a ele dar um restart no deployment para tudo ficar atualizado)
+
+---------------------- CODIGOS----------------------
+docker login
+
+docker build -t <dockerhub user>/<name> . 
+docker push <image name>                  (image name => <dockerhub user>/<name>)
+
+kubectl apply -f <file deployment name>
+
+kubectl get deployments
+kubectl get pods
+kubectl get services
+
+kubectl logs -f <pod name>
+
+kubectl rollout restart deployment <file deployment name>

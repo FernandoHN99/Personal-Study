@@ -1,0 +1,12 @@
+0- docker login
+1- fazer o código da aplicacao normalmente
+2- criar o arquivo dockerfile e dockerignore
+3- docker build -t <dockerhub user>/<name> . (construir a imagem - nomeTagImagem)
+4- docker run -p <PortaPC>:<PORTADocker> --name <nome> <nomeTagImagem> (rodar a imagem)
+5- docker ps (exibir imagens está rodando)
+6- docker stop nome_do_conteiner (parar a imagem)
+7- docker start nome_do_conteiner (iniciar a imagem)
+8- docker push <nomeTagImagem>  
+
+OBS: se nao forem passados tags ou nomes, o docker os cria automaticamente e sempre gerará id's.
+tantos tags ou nomes ou id's podem ser utilizados para parar ou iniciar uma imagem ou container.
