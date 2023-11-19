@@ -3,6 +3,7 @@ const app = express();
 const axios = require("axios");
 app.use(express.json());
 
+
 const baseConsulta = {};
 
 const funcoes = {
@@ -25,7 +26,7 @@ const funcoes = {
 };
 
 app.get("/lembretes", (req, res) => {
-    res.status (200) .send (baseConsulta);
+    res.status(200).send(baseConsulta);
 });
 
 app.post("/eventos", (req, res) => {

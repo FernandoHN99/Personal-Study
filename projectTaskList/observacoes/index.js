@@ -37,6 +37,7 @@ app.put('/lembretes/:id/observacoes', async (req, res) => {
     observacoesDoLembrete.push({ id: idObs, texto, status: 'aguardando' });
     observacoesPorLembreteId[req.params.id] = observacoesDoLembrete;
 
+    
     await axios.post('http://192.168.15.168:10000/eventos', {
         tipo: "ObservacaoCriada",
         dados: {
@@ -60,3 +61,4 @@ app.post("/eventos", (req, res) => {
 app.listen(5001, (() => {
 console.log('Lembretes. Porta 5001');
 }));
+
