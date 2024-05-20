@@ -5,7 +5,8 @@ import math
 
 ''' Util '''
 def limpar_tela():
-    os.system('clear')
+   #  os.system('clear')
+   pass
 
 def criar_matriz_quadrada(n_linhas):
     return np.full((n_linhas, n_linhas), ' ')
@@ -70,11 +71,11 @@ def perguntar_jogada(mat, dic_colunas):
 def verificar_vitoria(placar):
     return abs(placar) == 1000
 
-def funcao_avaliacao(mat, n_consecutivos=4):
+def funcao_avaliacao(mat, n_consecutivos=3):
     pontuacaoComput = max(
         avaliar_linhas(mat, 'O'),
         avaliar_colunas(mat, 'O'),
-        avaliar_diagonais_principais(mat, n_consecutivos,'O'),
+        avaliar_diagonais_principais(mat, n_consecutivos, 'O'),
         avaliar_diagonais_secundarias(mat, n_consecutivos, 'O'),
     )
     pontuacaoHumano = max(
@@ -83,17 +84,17 @@ def funcao_avaliacao(mat, n_consecutivos=4):
         avaliar_diagonais_principais(mat, n_consecutivos, 'X'),
         avaliar_diagonais_secundarias(mat, n_consecutivos, 'X'),
     )
-    if pontuacaoHumano == 4:
+    if pontuacaoHumano == 3:
         retorno = -1000
-    elif pontuacaoComput == 4:
+    elif pontuacaoComput == 3:
         retorno = 1000
-    elif pontuacaoHumano >= 2.5:
+    elif pontuacaoHumano == 2:
         retorno = -500
-    elif pontuacaoComput >= 2.5:
+    elif pontuacaoComput == 2:
         retorno = 500
     else:
-        retorno = 200 * (pontuacaoComput - pontuacaoHumano)
-    # print(f'Pontuação Humano={pontuacaoHumano}, Pontuação Computador={pontuacaoComput}, Retorno={retorno}')
+        retorno = 0
+    print(f'Pontuação Humano={pontuacaoHumano}, Pontuação Computador={pontuacaoComput}, Retorno={retorno}')
     return retorno
 
 def avaliar_linhas(mat, jogador):
@@ -124,19 +125,10 @@ def avaliar_diagonais_secundarias(mat, n_consecutivos, jogador):
 
 
 def pontuar(mat_str, jogador):
-    if (jogador * 4) in mat_str:
-        return 4
-    elif " " + (jogador * 3) in mat_str or (jogador * 3) + " " in mat_str:
+    if (jogador * 3) in mat_str:
         return 3
-    elif (
-            jogador + " " + (jogador * 2) in mat_str 
-            or (jogador * 2) + " " + jogador in mat_str
-        ):
-        return 2.5
     elif " " + (jogador * 2) in mat_str or (jogador * 2) + " " in mat_str:
         return 2
-    elif jogador + " " + jogador in mat_str or jogador + "  " + jogador in mat_str:
-        return 1.5
     else:
         return 0
 
@@ -173,7 +165,7 @@ def melhor_movimento():
         for j in range(len(mat[i])):
             if mat[i][j] == ' ':
                 mat[i][j] = 'O'
-                avaliacao = minimax(mat, 2, False)
+                avaliacao = minimax(mat, 1, False)
                 mat[i][j] = ' '
                 if avaliacao > melhor_avaliacao:
                     melhor_avaliacao = avaliacao
