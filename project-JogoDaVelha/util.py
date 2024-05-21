@@ -46,14 +46,15 @@ class Util:
       return abs(placar) == 1000   
 
    @staticmethod
-   def mat_to_mat_string_diagonais(mat):
+   def mat_to_mat_string_diagonais(mat, n_minimo_consecutivos):
       mat_diagonais_str = ''.join(mat.diagonal()) + "\n"
 
       for i in range(1, len(mat)):
          diagonal_acima = mat.diagonal(offset=i)
          diagonal_abaixo = mat.diagonal(offset=-i)
-         
-         mat_diagonais_str += ''.join(diagonal_acima) + "\n" + ''.join(diagonal_abaixo) + "\n"
+
+         if len(diagonal_acima) >= n_minimo_consecutivos:
+            mat_diagonais_str += ''.join(diagonal_acima) + "\n" + ''.join(diagonal_abaixo) + "\n"
       
       return mat_diagonais_str
 
