@@ -11,7 +11,7 @@ class Sistema:
       #   self.dic_dificuldade = {
       #       '1': { '3': 0, '5': 0, '7': 0},
       #       '2': { '3': 2, '5': 1, '7': 1},
-      #       '3': { '3': 5, '5': 2, '7': 2}
+      #       '3': { '3': 4, '5': 2, '7': 1}
       #   }
 
     def obter_opcao_usuario(self, entrada_usuario, opcoes_validas):
