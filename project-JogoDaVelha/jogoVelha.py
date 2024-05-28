@@ -2,6 +2,7 @@ import numpy as np
 import math
 from util import Util
 from abc import ABC, abstractmethod
+from tqdm import tqdm
 
 class JogoVelha(ABC):
    
@@ -119,7 +120,7 @@ class JogoVelha(ABC):
 
    def melhor_movimento(self):
       melhor_avaliacao = -math.inf
-      for i in range(len(self.mat)):
+      for i in tqdm(range(len(self.mat)), desc="Processando..."):
          for j in range(len(self.mat[i])):
                if self.mat[i][j] == ' ':
                   self.marcar_jogada_computador(i, j)

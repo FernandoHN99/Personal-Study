@@ -10,7 +10,7 @@ class JogoVelha3x3(JogoVelha):
 
       if tres_consecutivos in mat_str: return 3
       if (
-         f"{dois_consecutivos}" in mat_str or 
+         f"{dois_consecutivos} " in mat_str or
          f" {dois_consecutivos}" in mat_str or
          f"{jogador} {jogador}" in mat_str
          ):

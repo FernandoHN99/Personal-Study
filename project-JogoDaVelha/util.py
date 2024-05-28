@@ -31,10 +31,6 @@ class Util:
       return 0 <= linha < len(mat)
 
    @staticmethod
-   def verificar_vitoria(placar):
-      return abs(placar) == 1000
-
-   @staticmethod
    def mat_to_mat_string_linhas(mat):
       mat_linhas_str = ""
       for l in range(len(mat)):
@@ -43,7 +39,7 @@ class Util:
 
    @staticmethod
    def verificar_vitoria(placar):
-      return abs(placar) == 1000   
+      return abs(placar) >= 10000
 
    @staticmethod
    def mat_to_mat_string_diagonais(mat, n_minimo_consecutivos):
