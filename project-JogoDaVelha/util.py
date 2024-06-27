@@ -38,10 +38,6 @@ class Util:
       return mat_linhas_str
 
    @staticmethod
-   def verificar_vitoria(placar):
-      return abs(placar) >= 10000
-
-   @staticmethod
    def mat_to_mat_string_diagonais(mat, n_minimo_consecutivos):
       mat_diagonais_str = ''.join(mat.diagonal()) + "\n"
 

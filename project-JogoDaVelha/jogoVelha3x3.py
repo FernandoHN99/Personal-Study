@@ -17,6 +17,9 @@ class JogoVelha3x3(JogoVelha):
          return 2
       else:
          return 0
+      
+   def verificar_vitoria(self, placar):
+      return abs(placar) >= 1000
    
    def funcao_avaliacao(self):
       pontuacaoComput = max(

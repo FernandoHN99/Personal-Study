@@ -32,7 +32,6 @@ class JogoVelhaNxN(JogoVelha, ABC):
       
       return pontuacao
 
-
    def funcao_avaliacao(self):
       pontuacaoComput = sum([
          self.avaliar_linhas(self.simbolo_computador),

@@ -22,6 +22,10 @@ class JogoVelha(ABC):
    def funcao_avaliacao(self):
       pass
 
+   @abstractmethod
+   def verificar_vitoria(self, placar):
+      pass
+
    def contar_jogadas_restantes(self):
       return sum(1 for linha in self.mat for elemento in linha if elemento == " ")
 
@@ -93,7 +97,7 @@ class JogoVelha(ABC):
 
    def minimax(self, profundidade, eh_maximizador):
       placar = self.funcao_avaliacao()
-      if Util.verificar_vitoria(placar) or profundidade == 0 or self.contar_jogadas_restantes() == 0:
+      if self.verificar_vitoria(placar) or profundidade == 0 or self.contar_jogadas_restantes() == 0:
          return placar
 
       if eh_maximizador:
@@ -145,7 +149,7 @@ class JogoVelha(ABC):
          self.marcar_jogada_humano(linha, coluna)
          self.imprimir_jogo()
          placar = self.funcao_avaliacao()
-         if Util.verificar_vitoria(placar):
+         if self.verificar_vitoria(placar):
                print("Você venceu!")
                break
          elif self.contar_jogadas_restantes() == 0:
@@ -155,7 +159,7 @@ class JogoVelha(ABC):
          self.marcar_jogada_computador(linha, coluna)
          placar = self.funcao_avaliacao()
          self.imprimir_jogo()
-         if Util.verificar_vitoria(placar):
+         if self.verificar_vitoria(placar):
                print("Computador venceu!")
                break
          elif self.contar_jogadas_restantes() == 0:
