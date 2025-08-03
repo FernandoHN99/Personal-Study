@@ -1,2 +1,0 @@
-Quando usar ol ou ul:
-    li -> Pode ou nao fechar a marca

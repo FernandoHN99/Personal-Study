@@ -1,2 +1,0 @@
-code -> monoespaçada: todos os caraceteres tem o mesmo tamanho
-pre -> preserva espaços e quebras de linha
