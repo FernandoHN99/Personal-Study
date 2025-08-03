@@ -1,0 +1,143 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+:root{
+    --cor0: #CC5B63;
+    --cor1: #933D55;
+    --cor2: #70284E;
+    --corBase0: white;
+    --corBase1: black;
+    --font-padrao: Helvetica, sans-serif;
+}
+
+body{
+    background-image: linear-gradient(to right, var(--cor0), var(--cor2));
+    font-family: var(--font-padrao);
+}
+
+
+main{
+    color: var(--corBase0);
+    width: 500px;
+    text-align: center;
+    margin: auto;
+}
+
+main > h1{
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+#form-tasks{
+    position: relative;
+}
+
+#form-tasks input{
+    box-sizing: border-box; /* não pensaria */
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    border: 1px solid var(--cor2);
+    background: var(--corBase0);
+}
+
+#form-tasks input::placeholder{ 
+    color: var(--cor2);
+}
+
+#form-tasks input:focus{
+    outline: none;
+}
+
+#btt-add-task{
+    position: absolute;
+    background-color: var(--corBase0);
+    border: 1px solid var(--cor2);
+    cursor: pointer;
+    transition: 0.2s;
+    padding: 15px; 
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 53px;
+    padding: 3px;
+}
+
+
+#btt-add-task:hover{
+    background-color: var(--cor0);
+    color: var(--corBase0);
+}
+
+ion-icon{
+    font-size: 30px; 
+}
+
+#task-list{
+    list-style: none;
+}
+
+li{
+    text-align: left;
+    height: 53px;
+    line-height: 50px; /* não pensaria */
+    margin-bottom: 12px;
+    position: relative;
+    box-sizing: border-box; /* não pensaria */
+    font-size: 18px;
+    border: 1px solid var(--cor2);
+    background: var(--corBase0);
+    box-shadow: 2px 2px 0px var(--cor2);
+    font-weight: bolder;
+    color: var(--cor2);
+
+}
+
+li .task-title{
+    padding-left: 15px;
+}
+
+li ion-icon{
+    font-weight: bolder;
+    position: absolute;
+    padding: 11px 5px;
+    transition: .4s;
+    cursor: pointer;
+}
+
+.done-btn{
+    right: 40px;
+} 
+
+.done-btn:hover{
+    color: var(--corBase0);
+    /* background-color: var(--cor0); */
+    background-color: rgb(0, 128, 0);
+}
+
+.remove-btn{
+    right: 0;
+}
+
+.remove-btn:hover{
+    color: var(--corBase0);
+    /* background-color: var(--cor1); */
+    background-color: red;
+}
+
+.hide{
+    display: none;
+}
+
+#task-list li.done{
+    background-color: var(--cor2);
+    color: var(--corBase0);
+    text-decoration: line-through;
+}
+
