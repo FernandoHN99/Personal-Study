@@ -1,3 +1,0 @@
-Kali
-Fedora
-Mac OS
