@@ -1,25 +1,17 @@
-VERSION 1.0 CLASS
-BEGIN
-  MultiUse = -1  'True
-END
-Attribute VB_Name = "KeyValueStore"
-Attribute VB_GlobalNameSpace = False
-Attribute VB_Creatable = False
-Attribute VB_PredeclaredId = False
-Attribute VB_Exposed = False
 '==============================================================================
 ' KeyValueStore - substituto nativo do Scripting.Dictionary
 '==============================================================================
+' Cole este codigo direto em um Class Module chamado KeyValueStore.
 ' O Excel para Mac NAO possui Microsoft Scripting Runtime, entao
 ' CreateObject("Scripting.Dictionary") falha em runtime. Esta classe
-' replica o minimo usado no projeto: Item (get/set por chave, e o membro
-' padrao), Exists e Count. Funciona no Mac e no Windows.
+' replica o minimo usado no projeto: Item (get/set por chave), Exists e Count.
+' Funciona no Mac e no Windows.
 '
 ' Uso:
 '   Dim d As KeyValueStore
 '   Set d = New KeyValueStore
-'   d("Ticker") = "USD"          ' set (Item e o membro padrao)
-'   x = d("Ticker")              ' get
+'   d.Item("Ticker") = "USD"
+'   x = d.Item("Ticker")
 '   If d.Exists("Ticker") Then ...
 '
 ' Chaves sao tratadas como String (case-sensitive), igual ao uso atual.
@@ -46,16 +38,13 @@ Private Function IndexOfKey(ByVal key As String) As Long
     IndexOfKey = 0
 End Function
 
-' *** Item (membro padrao) - GET ***
+' *** Item - GET ***
 Public Property Get Item(ByVal key As String) As Variant
-Attribute Item.VB_UserMemId = 0
     Dim idx As Long
     idx = IndexOfKey(key)
     If idx = 0 Then
         Item = Null
     Else
-        Dim v As Variant
-        v = mVals(idx)
         If IsObject(mVals(idx)) Then
             Set Item = mVals(idx)
         Else
@@ -64,12 +53,12 @@ Attribute Item.VB_UserMemId = 0
     End If
 End Property
 
-' *** Item (membro padrao) - LET (valores simples) ***
+' *** Item - LET (valores simples) ***
 Public Property Let Item(ByVal key As String, ByVal value As Variant)
     UpsertValue key, value
 End Property
 
-' *** Item (membro padrao) - SET (objetos) ***
+' *** Item - SET (objetos) ***
 Public Property Set Item(ByVal key As String, ByVal value As Object)
     UpsertValue key, value
 End Property

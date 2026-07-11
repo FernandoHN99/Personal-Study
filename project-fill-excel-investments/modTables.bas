@@ -74,7 +74,7 @@ Public Function GetLastRows(tbl As ListObject, colDateName As String, lastDate A
     For row = firstRow To rng.rows.Count
         Set rowDict = New KeyValueStore
         For Each col In tbl.ListColumns
-            rowDict(col.Name) = rng.Cells(row, col.Index).Value
+            rowDict.Item(col.Name) = rng.Cells(row, col.Index).Value
         Next col
         result.Add rowDict
     Next row
@@ -109,7 +109,7 @@ Public Sub DuplicateLastRowsToNewDate(tbl As ListObject, colDateName As String, 
                 ' So escreve valores; colunas de formula da tabela se
                 ' auto-preenchem ao adicionar a linha (nao sobrescrever).
                 If Not IsFormulaColumn(tbl, col.Index) Then
-                    newRow.Range.Cells(1, col.Index).Value = rowDict(col.Name)
+                    newRow.Range.Cells(1, col.Index).Value = rowDict.Item(col.Name)
                 End If
             End If
         Next col

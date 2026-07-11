@@ -72,14 +72,14 @@ Private Function FetchAllValues(rows As Collection) As KeyValueStore
 
     For i = 1 To rows.Count
         Set rowDict = rows(i)
-        ticker = CStr(rowDict(COL_COTACOES_TICKER))
-        assetType = CStr(rowDict(COL_COTACOES_TIPO))
-        currencyBase = CStr(rowDict(COL_COTACOES_MOEDA_BASE))
+        ticker = CStr(rowDict.Item(COL_COTACOES_TICKER))
+        assetType = CStr(rowDict.Item(COL_COTACOES_TIPO))
+        currencyBase = CStr(rowDict.Item(COL_COTACOES_MOEDA_BASE))
 
         Select Case UCase(assetType)
             Case UCase(TYPE_FIAT)
                 val = FetchCurrency(ticker)
-                If IsNumeric(val) Then currencyMap(ticker) = val
+                If IsNumeric(val) Then currencyMap.Item(ticker) = val
 
             Case UCase(TYPE_CRIPTO)
                 val = FetchCrypto(ticker)
@@ -93,7 +93,7 @@ Private Function FetchAllValues(rows As Collection) As KeyValueStore
                 End If
         End Select
 
-        rowDict("__val") = val
+        rowDict.Item("__val") = val
     Next i
 
     Set FetchAllValues = currencyMap
@@ -110,15 +110,15 @@ Private Sub ApplyCurrencyConversion(rows As Collection, currencyMap As KeyValueS
 
     For i = 1 To rows.Count
         Set rowDict = rows(i)
-        assetType = UCase(CStr(rowDict(COL_COTACOES_TIPO)))
-        currencyBase = CStr(rowDict(COL_COTACOES_MOEDA_BASE))
-        val = rowDict("__val")
+        assetType = UCase(CStr(rowDict.Item(COL_COTACOES_TIPO)))
+        currencyBase = CStr(rowDict.Item(COL_COTACOES_MOEDA_BASE))
+        val = rowDict.Item("__val")
 
         If assetType <> UCase(TYPE_FIAT) And assetType <> UCase(TYPE_CRIPTO) Then
             If UCase(currencyBase) <> "USD" And IsNumeric(val) Then
                 If currencyMap.Exists(currencyBase) Then
-                    rate = currencyMap(currencyBase)
-                    If IsNumeric(rate) Then rowDict("__val") = CDbl(val) * CDbl(rate)
+                    rate = currencyMap.Item(currencyBase)
+                    If IsNumeric(rate) Then rowDict.Item("__val") = CDbl(val) * CDbl(rate)
                 End If
             End If
         End If
@@ -224,10 +224,10 @@ Private Sub InsertQuoteRows(tbl As ListObject, rows As Collection, newDate As Da
         Set newRow = tbl.ListRows.Add()
 
         newRow.Range.Cells(1, tbl.ListColumns(COL_COTACOES_DATA).Index).Value = newDate
-        newRow.Range.Cells(1, tbl.ListColumns(COL_COTACOES_TICKER).Index).Value = rowDict(COL_COTACOES_TICKER)
-        newRow.Range.Cells(1, tbl.ListColumns(COL_COTACOES_VALOR).Index).Value = rowDict("__val")
-        newRow.Range.Cells(1, tbl.ListColumns(COL_COTACOES_MOEDA_BASE).Index).Value = rowDict(COL_COTACOES_MOEDA_BASE)
-        newRow.Range.Cells(1, tbl.ListColumns(COL_COTACOES_TIPO).Index).Value = rowDict(COL_COTACOES_TIPO)
+        newRow.Range.Cells(1, tbl.ListColumns(COL_COTACOES_TICKER).Index).Value = rowDict.Item(COL_COTACOES_TICKER)
+        newRow.Range.Cells(1, tbl.ListColumns(COL_COTACOES_VALOR).Index).Value = rowDict.Item("__val")
+        newRow.Range.Cells(1, tbl.ListColumns(COL_COTACOES_MOEDA_BASE).Index).Value = rowDict.Item(COL_COTACOES_MOEDA_BASE)
+        newRow.Range.Cells(1, tbl.ListColumns(COL_COTACOES_TIPO).Index).Value = rowDict.Item(COL_COTACOES_TIPO)
     Next i
 End Sub
 
@@ -247,7 +247,7 @@ Private Sub UpdateQuoteRows(tbl As ListObject, rows As Collection)
     firstRow = totalRows - rows.Count + 1
     For i = 1 To rows.Count
         Set rowDict = rows(i)
-        tbl.DataBodyRange.Cells(firstRow + i - 1, valIdx).Value = rowDict("__val")
+        tbl.DataBodyRange.Cells(firstRow + i - 1, valIdx).Value = rowDict.Item("__val")
     Next i
 End Sub
 
