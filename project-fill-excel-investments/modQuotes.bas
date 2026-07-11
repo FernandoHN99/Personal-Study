@@ -260,15 +260,15 @@ Private Function ResolveCoinGeckoIdBySearch(symbol As String) As String
     resp = HttpGet(url)
     If Len(resp) = 0 Then Exit Function
 
-    symbolPattern = """symbol":""" & symbol & """"
+    symbolPattern = Chr$(34) & "symbol" & Chr$(34) & ":" & Chr$(34) & symbol & Chr$(34)
     matchPos = InStr(1, resp, symbolPattern, vbTextCompare)
     If matchPos = 0 Then Exit Function
 
-    idPos = InStrRev(Left$(resp, matchPos), """id":""")
+    idPos = InStrRev(Left$(resp, matchPos), Chr$(34) & "id" & Chr$(34) & ":" & Chr$(34))
     If idPos = 0 Then Exit Function
 
-    idStart = idPos + Len("""id":""")
-    idEnd = InStr(idStart, resp, """")
+    idStart = idPos + Len(Chr$(34) & "id" & Chr$(34) & ":" & Chr$(34))
+    idEnd = InStr(idStart, resp, Chr$(34))
     If idEnd = 0 Then Exit Function
 
     ResolveCoinGeckoIdBySearch = Mid$(resp, idStart, idEnd - idStart)
