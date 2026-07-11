@@ -41,10 +41,10 @@ Public Sub AtualizarInvestimentos()
     RemoveScratchSheet
 
     ' *** CLEANUP ***
-    Application.Calculation = xlCalculationAutomatic
+    Application.Calculation = prevCalc
     Application.EnableEvents = True
     Application.ScreenUpdating = True
-    ThisWorkbook.RecalcAll
+    Application.CalculateFull
     ThisWorkbook.Save
 
     Application.StatusBar = False
@@ -55,7 +55,7 @@ ErrorHandler:
     ' Restaurar estado mesmo em erro
     On Error Resume Next
     RemoveScratchSheet
-    Application.Calculation = xlCalculationAutomatic
+    Application.Calculation = prevCalc
     Application.EnableEvents = True
     Application.ScreenUpdating = True
     Application.StatusBar = False
@@ -74,4 +74,3 @@ Private Sub UpdateTimestamps()
     ws.Range("A2").Value = Format(Now, "dd/mm/yyyy hh:mm:ss")
     On Error GoTo 0
 End Sub
-

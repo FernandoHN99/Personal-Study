@@ -32,7 +32,7 @@ Fail:
 End Function
 
 ' *** Ler as linhas da ultima leva (todas com lastDate), em ordem NATURAL ***
-' Retorna Collection de Scripting.Dictionary; cada item tem as colunas por nome.
+' Retorna Collection de KeyValueStore; cada item tem as colunas por nome.
 ' Ordem natural = de cima para baixo (mesma ordem visual da tabela).
 Public Function GetLastRows(tbl As ListObject, colDateName As String, lastDate As Date) As Collection
     Dim result As Collection
@@ -40,7 +40,7 @@ Public Function GetLastRows(tbl As ListObject, colDateName As String, lastDate A
     Dim row As Long
     Dim firstRow As Long
     Dim cellValue As Variant
-    Dim rowDict As Object
+    Dim rowDict As KeyValueStore
     Dim col As ListColumn
     Dim dateIdx As Long
 
@@ -72,7 +72,7 @@ Public Function GetLastRows(tbl As ListObject, colDateName As String, lastDate A
 
     ' 2) Coletar de firstRow ate o fim, em ordem natural
     For row = firstRow To rng.rows.Count
-        Set rowDict = CreateObject("Scripting.Dictionary")
+        Set rowDict = New KeyValueStore
         For Each col In tbl.ListColumns
             rowDict(col.Name) = rng.Cells(row, col.Index).Value
         Next col
@@ -89,7 +89,7 @@ End Function
 ' *** Duplicar a ultima leva trocando apenas a coluna Data (investimentos) ***
 Public Sub DuplicateLastRowsToNewDate(tbl As ListObject, colDateName As String, oldLastDate As Date, newDate As Date)
     Dim lastRows As Collection
-    Dim rowDict As Object
+    Dim rowDict As KeyValueStore
     Dim newRow As ListRow
     Dim col As ListColumn
     Dim i As Long

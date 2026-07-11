@@ -22,7 +22,7 @@ Public Sub UpdateQuotes()
     Dim firstDayMonth As Date
     Dim isInsert As Boolean
     Dim rows As Collection
-    Dim currencyMap As Object
+    Dim currencyMap As KeyValueStore
 
     On Error GoTo ErrorHandler
 
@@ -59,16 +59,16 @@ ErrorHandler:
 End Sub
 
 ' *** Buscar valor de cada linha; retorna map Ticker->Valor das moedas FIAT ***
-Private Function FetchAllValues(rows As Collection) As Object
-    Dim currencyMap As Object
+Private Function FetchAllValues(rows As Collection) As KeyValueStore
+    Dim currencyMap As KeyValueStore
     Dim i As Long
-    Dim rowDict As Object
+    Dim rowDict As KeyValueStore
     Dim ticker As String
     Dim assetType As String
     Dim currencyBase As String
     Dim val As Variant
 
-    Set currencyMap = CreateObject("Scripting.Dictionary")
+    Set currencyMap = New KeyValueStore
 
     For i = 1 To rows.Count
         Set rowDict = rows(i)
@@ -100,9 +100,9 @@ Private Function FetchAllValues(rows As Collection) As Object
 End Function
 
 ' *** Converter ativos globais (nao-USD, nao-FIAT, nao-CRIPTO) para BRL ***
-Private Sub ApplyCurrencyConversion(rows As Collection, currencyMap As Object)
+Private Sub ApplyCurrencyConversion(rows As Collection, currencyMap As KeyValueStore)
     Dim i As Long
-    Dim rowDict As Object
+    Dim rowDict As KeyValueStore
     Dim assetType As String
     Dim currencyBase As String
     Dim val As Variant
@@ -215,7 +215,7 @@ End Function
 ' *** Inserir nova leva de cotacoes (virou o mes) ***
 Private Sub InsertQuoteRows(tbl As ListObject, rows As Collection, newDate As Date)
     Dim i As Long
-    Dim rowDict As Object
+    Dim rowDict As KeyValueStore
     Dim newRow As ListRow
 
     ' rows() esta em ordem natural (cima->baixo); insere na mesma ordem
@@ -234,7 +234,7 @@ End Sub
 ' *** Atualizar valores da ultima leva no lugar (mesmo mes) ***
 Private Sub UpdateQuoteRows(tbl As ListObject, rows As Collection)
     Dim i As Long
-    Dim rowDict As Object
+    Dim rowDict As KeyValueStore
     Dim totalRows As Long
     Dim firstRow As Long
     Dim valIdx As Long

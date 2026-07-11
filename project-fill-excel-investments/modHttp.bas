@@ -2,9 +2,7 @@ Attribute VB_Name = "modHttp"
 '==============================================================================
 ' modHttp - Requisicoes HTTP (macOS via curl; Windows via WinHTTP)
 '==============================================================================
-' IMPORTANTE: O Excel para Mac NAO suporta Web Queries (QueryTables com "URL;"
-' e propriedades Web* nao existem no modelo de objetos do Mac -> erro de
-' compilacao "Method or data member not found").
+' HTTP nativo para Excel Mac/Windows sem Python.
 '
 ' Solucao macOS: MacScript() executa AppleScript embutido que roda `curl`.
 ' Tudo fica dentro do .xlsm (o AppleScript e uma string no VBA, sem arquivo
