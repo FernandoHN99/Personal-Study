@@ -195,9 +195,15 @@ Private Function FetchCrypto(ticker As String) As Variant
     Dim url As String
     Dim resp As String
     Dim val As Variant
+    Dim coinId As String
 
-    ' CoinGecko usa 'ids' em minusculo (ex: bitcoin) ou 'symbols'
-    url = API_URL_COINGECKO & "?ids=" & LCase(ticker) & "&vs_currencies=brl&x_cg_demo_api_key=" & API_KEY_GECKO
+    coinId = ResolveCoinGeckoId(ticker)
+    If Len(coinId) = 0 Then
+        FetchCrypto = "Error"
+        Exit Function
+    End If
+
+    url = API_URL_COINGECKO & "?ids=" & coinId & "&vs_currencies=brl&x_cg_demo_api_key=" & API_KEY_GECKO
     resp = HttpGet(url)
     If Len(resp) = 0 Then
         FetchCrypto = "Error"
@@ -206,6 +212,66 @@ Private Function FetchCrypto(ticker As String) As Variant
 
     val = JsonGetNumberByKey(resp, "brl")
     FetchCrypto = IIf(IsNull(val), "Error", val)
+End Function
+
+' *** Resolver ticker simbolo para o id do CoinGecko ***
+Private Function ResolveCoinGeckoId(ticker As String) As String
+    Dim normalized As String
+    Dim id As String
+
+    normalized = LCase(Trim(ticker))
+
+    Select Case normalized
+        Case "btc": id = "bitcoin"
+        Case "sol": id = "solana"
+        Case "eth": id = "ethereum"
+        Case "ada": id = "cardano"
+        Case "xrp": id = "ripple"
+        Case "bnb": id = "binancecoin"
+        Case "doge": id = "dogecoin"
+        Case "dot": id = "polkadot"
+        Case "matic": id = "polygon"
+        Case "ltc": id = "litecoin"
+        Case Else
+            ' Se o valor ja for um id conhecido (ex: bitcoin, solana), usa direto.
+            If Len(normalized) > 4 Then
+                id = normalized
+            Else
+                id = ResolveCoinGeckoIdBySearch(normalized)
+            End If
+    End Select
+
+    ResolveCoinGeckoId = id
+End Function
+
+' *** Fallback: procura o id no endpoint /search do CoinGecko ***
+Private Function ResolveCoinGeckoIdBySearch(symbol As String) As String
+    Dim url As String
+    Dim resp As String
+    Dim symbolPattern As String
+    Dim matchPos As Long
+    Dim idPos As Long
+    Dim idStart As Long
+    Dim idEnd As Long
+
+    If Len(symbol) = 0 Then Exit Function
+
+    url = "https://api.coingecko.com/api/v3/search?query=" & symbol & "&x_cg_demo_api_key=" & API_KEY_GECKO
+    resp = HttpGet(url)
+    If Len(resp) = 0 Then Exit Function
+
+    symbolPattern = """symbol":""" & symbol & """"
+    matchPos = InStr(1, resp, symbolPattern, vbTextCompare)
+    If matchPos = 0 Then Exit Function
+
+    idPos = InStrRev(Left$(resp, matchPos), """id":""")
+    If idPos = 0 Then Exit Function
+
+    idStart = idPos + Len("""id":""")
+    idEnd = InStr(idStart, resp, """")
+    If idEnd = 0 Then Exit Function
+
+    ResolveCoinGeckoIdBySearch = Mid$(resp, idStart, idEnd - idStart)
 End Function
 
 '==============================================================================

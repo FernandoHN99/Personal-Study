@@ -116,6 +116,7 @@ Objetivo: replicar o comportamento do `main.py` como macro VBA dentro da planilh
 **Roteamento de cotações (idêntico ao `main.py`):**
 - `Tipo == "FIAT"` → AwesomeAPI (`/USD-BRL`, campo `bid`); `BRL` = 1.0 implícito.
 - `Tipo == "CRIPTO"` → CoinGecko (`vs_currencies=brl`, campo `brl`).
+  - Para tickers como `BTC`/`SOL`, o VBA resolve o `id` real do CoinGecko antes da consulta (`bitcoin`, `solana`).
 - Ações/ETF `Moeda Base == "USD"` → Finnhub (campo `c`).
 - Ações/ETF outra moeda → Alpha Vantage (`4. close`), depois `* cotação da Moeda Base` (do próprio map FIAT) para virar BRL.
 
