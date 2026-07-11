@@ -282,12 +282,12 @@ def start_flow_quote(wb, date_today):
 
     global DATE_COL, TICKER_COL, VALUE_COL, CURRENCY_BASE_COL, TYPE_COL
 
-    # Mapeando Colunas
-    DATE_COL= header[0]   
-    TICKER_COL = header[1]
-    VALUE_COL = header[2]
-    CURRENCY_BASE_COL = header[3]
-    TYPE_COL = header[4]
+    # Mapeando Colunas (por nome fixo, não por posição)
+    DATE_COL = "Data"
+    TICKER_COL = "Ticker"
+    VALUE_COL = "Valor"
+    CURRENCY_BASE_COL = "Moeda Base"
+    TYPE_COL = "Tipo"
 
     # Transofrmando Table em DataFrame
     df = pd.DataFrame(table_quote_data)
@@ -310,53 +310,166 @@ def start_flow_quote(wb, date_today):
     upsert_table_excel_data(wb, ws_quote, table_quote, df_new_quotes, is_insert)
 
 # ********* Investimento *********
-def start_flow_investiment(wb, date_today):
-    # Mapeando Tabela
-    ws_investiment = wb[SHEET_INVESTIMENT_NAME]
-    table_investiment = ws_investiment._tables[TABLE_INVESTIMENT_NAME]
-    header, table_investiment_data = ler_tabela_para_dicionarios(ws_investiment, table_investiment)
-
-    global DATE_COL, NAME_COL, INSTITUTION_COL, TYPE_COL, QUOTE_VALUE_COL, QUOTE_BASE_CURRENCY_COL, ASSET_COL, BASE_CURRENCY_COL, QTDE_COL, TOTAL_BRL_COL, TOTAL_USD_COL
-    # Mapeando Colunas
-    DATE_COL= header[0]   
-    NAME_COL = header[1]
-    INSTITUTION_COL = header[2]
-    TYPE_COL = header[3]
-    QUOTE_VALUE_COL = header[4]
-    QUOTE_BASE_CURRENCY_COL = header[5]
-    ASSET_COL = header[6]
-    BASE_CURRENCY_COL = header[7]
-    QTDE_COL = header[8]
-    TOTAL_BRL_COL = header[9]
-    TOTAL_USD_COL = header[10]
-
-    # Transofrmando Table em Df
-    df = pd.DataFrame(table_investiment_data)
-    # Montando DataFrame de Insert ou Update
-    latest_date = df[DATE_COL].max()
-    df_investiment = df[df[DATE_COL] == latest_date].copy()
-
-    if(latest_date < pd.Timestamp(date_today)):
-        df_investiment[DATE_COL] = date_today
-
-        # Inserindo Novos Dados
-        upsert_table_excel_data(wb, ws_investiment, table_investiment, df_investiment, True)
+# DEPRECATED - agora usa xlwings no bloco principal
+# def start_flow_investiment(wb, date_today, sheet_name, table_name):
+#     # Mapeando Tabela
+#     ws_investiment = wb[sheet_name]
+#     table_investiment = ws_investiment._tables[table_name]
+#     header, table_investiment_data = ler_tabela_para_dicionarios(ws_investiment, table_investiment)
+#
+#     # Transformando Table em DataFrame
+#     df = pd.DataFrame(table_investiment_data)
+#     
+#     # Montando DataFrame de Insert ou Update
+#     # Usa apenas a coluna "Data" para determinar se o mês virou
+#     latest_date = df["Data"].max()
+#     df_investiment = df[df["Data"] == latest_date].copy()
+#
+#     if(latest_date < pd.Timestamp(date_today)):
+#         df_investiment["Data"] = date_today
+#         # Inserindo Novos Dados
+#         upsert_table_excel_data(wb, ws_investiment, table_investiment, df_investiment, True)
 
 def get_current_date_start_of_month():
     today = datetime.today()
     return date(today.year, today.month, 1)
 
+# -------- Funções xlwings ---------
+
+def get_table_ranges(excel_path):
+    """
+    Descobre os ranges atuais das tabelas usando openpyxl (read-only).
+    Retorna dict {table_name: "range_str"}
+    """
+    from openpyxl import load_workbook
+    try:
+        wb_ro = load_workbook(excel_path, data_only=False)
+        ranges = {}
+        for sheet_name in wb_ro.sheetnames:
+            ws = wb_ro[sheet_name]
+            for table_name in ws._tables:
+                table_obj = ws._tables[table_name]
+                table_ref = table_obj if isinstance(table_obj, str) else table_obj.ref
+                ranges[table_name] = table_ref
+        wb_ro.close()
+        return ranges
+    except Exception as e:
+        print(f"Erro ao ler ranges das tabelas: {e}")
+        return {}
+
+def read_table_xlwings(sheet, table_range_str):
+    """
+    Lê uma tabela Excel usando xlwings e retorna header e dados como lista de dicts.
+    table_range_str: ex "C4:G136" (header na primeira linha do range)
+    """
+    try:
+        # Ler toda a range
+        rng = sheet.range(table_range_str)
+        all_data = rng.value
+        
+        if not all_data:
+            return [], []
+        
+        # Se só tem 1 linha, retorna como tupla simples
+        if not isinstance(all_data[0], (list, tuple)):
+            all_data = [all_data]
+        
+        # Primeira linha é header
+        header = all_data[0]
+        data_rows = all_data[1:]
+        
+        # Converter para lista de dicts
+        table_data = []
+        for row in data_rows:
+            row_dict = dict(zip(header, row))
+            table_data.append(row_dict)
+        
+        return header, table_data
+    except Exception as e:
+        print(f"Erro ao ler tabela {table_range_str}: {e}")
+        return [], []
+
+def write_table_xlwings(sheet, table_range_str, df_data):
+    """
+    Escreve dados em uma tabela Excel usando xlwings (update na última leva).
+    Encontra as últimas N linhas e atualiza seus valores.
+    """
+    try:
+        # Parse range string (ex: "C4:G136" -> start_row=4, end_row=136)
+        from openpyxl.utils import get_column_letter
+        parts = table_range_str.split(':')
+        start_cell = parts[0]  # Ex: "C4"
+        end_cell = parts[1]    # Ex: "G136"
+        
+        import re
+        start_match = re.match(r'([A-Z]+)(\d+)', start_cell)
+        end_match = re.match(r'([A-Z]+)(\d+)', end_cell)
+        
+        start_col_letter = start_match.group(1)
+        start_row_num = int(start_match.group(2))
+        end_row_num = int(end_match.group(2))
+        
+        n_rows_to_update = len(df_data)
+        n_data_rows = end_row_num - start_row_num  # sem contar o header
+        
+        # Atualizar as últimas N linhas de dados
+        first_update_row = end_row_num - n_rows_to_update + 1
+        
+        for idx, (i, row) in enumerate(df_data.iterrows()):
+            for col_idx, col_name in enumerate(df_data.columns):
+                cell_address = f"{get_column_letter(ord(start_col_letter) - ord('A') + 1 + col_idx)}{first_update_row + idx}"
+                sheet.range(cell_address).value = row[col_name]
+    except Exception as e:
+        print(f"Erro ao escrever na tabela {table_range_str}: {e}")
+
+def insert_table_xlwings(sheet, table_range_str, df_data):
+    """
+    Insere novas linhas em uma tabela Excel usando xlwings.
+    Escreve os dados nas linhas imediatamente após o range atual.
+    """
+    try:
+        import re
+        from openpyxl.utils import get_column_letter
+        
+        # Parse range (ex: "C4:G136" -> colunas de C a G, linhas 4 a 136)
+        parts = table_range_str.split(':')
+        start_cell = parts[0]
+        end_cell = parts[1]
+        
+        start_match = re.match(r'([A-Z]+)(\d+)', start_cell)
+        end_match = re.match(r'([A-Z]+)(\d+)', end_cell)
+        
+        start_col_letter = start_match.group(1)
+        start_col_num = ord(start_col_letter) - ord('A')
+        start_row_num = int(start_match.group(2))
+        end_row_num = int(end_match.group(2))
+        
+        # Inserir dados começando da linha após o final do range
+        first_new_row = end_row_num + 1
+        
+        for idx, (i, row) in enumerate(df_data.iterrows()):
+            for col_idx, col_name in enumerate(df_data.columns):
+                col_letter = get_column_letter(start_col_num + col_idx + 1)
+                cell_address = f"{col_letter}{first_new_row + idx}"
+                sheet.range(cell_address).value = row[col_name]
+    except Exception as e:
+        print(f"Erro ao inserir na tabela {table_range_str}: {e}")
+
+
+
 # -------- Env Vars ---------
 REF_COL = "Ref Cells"
 # *** Cotação ***
 SHEET_QUOTE_NAME = "Cotacoes"
-TABLE_QUOTE_NAME = "Cotacoes_01"
+TABLE_QUOTE_NAME = "Table_Cotacoes"
 API_KEY_ALPHA = "J9OM0X9200KP47G2"
 API_KEY_GECKO = "CG-ayNYBkPDUfbHRwk4MbWVrYiE"
 API_KEY_FINNHUB = "d3o1m79r01qmj82ve8jgd3o1m79r01qmj82ve8k0"
 # *** Investimento ***
-SHEET_INVESTIMENT_NAME = "Investimentos"
-TABLE_INVESTIMENT_NAME = "Investimentos_01"
+SHEET_INVEST_MAIN = "Investimentos_Main"
+TABLE_INVEST_MAIN = "Table_Investimentos_Main"
+SHEET_INVEST_PORCENT = "Investimentos_Porcent"
+TABLE_INVEST_PORCENT = "Table_Investimentos_Porcent"
 
 # -------- Main ---------
 # Acessando Arquivo
@@ -368,7 +481,6 @@ try:
     nome_arquivo = EXCEL_PATH.rsplit("/", 1)[-1]
     password = getpass.getpass(f"Digite a senha da planilha, se houver ({nome_arquivo}): ")
 
-    from openpyxl import load_workbook
     from openpyxl.utils import get_column_letter, range_boundaries
     import io
     import os
@@ -381,35 +493,87 @@ try:
     from copy import copy
     import getpass
     from msoffcrypto.format.ooxml import OOXMLFile
+    import xlwings as xw
 
-    if(password == "" or password == None):
-        wb = load_workbook(EXCEL_PATH, data_only=False)
-    else:
-        decrypted_workbook = open_workbook_with_password(EXCEL_PATH, password)
-        wb = load_workbook(filename=decrypted_workbook)
+    if(password != "" and password != None):
+        raise Exception("Senha de planilha não é suportada com xlwings. Abra a planilha sem senha.")
+    
+    # Abrir workbook com xlwings (Excel controla o arquivo)
+    try:
+        book = xw.Book(EXCEL_PATH)
+    except Exception as e:
+        raise Exception(f"Erro ao abrir planilha com xlwings. Certifique-se que o Excel está instalado e acessível: {e}")
 
 
-    # Inciando Fluxos
-    print("\n**** Inciando Atualização ****\n")
+    # Iniciando Fluxos
+    print("\n**** Iniciando Atualização ****\n")
     date_today = get_current_date_start_of_month()
-
-    start_flow_quote(wb, date_today)
-    start_flow_investiment(wb, date_today)
-
-    wb[SHEET_QUOTE_NAME]["A1"] = f"Última Atualização"
-    wb[SHEET_QUOTE_NAME]["A2"] = f"{datetime.now():%d/%m/%Y %H:%M:%S}"
-
-    # Salvando em Disco
-    final_buf = io.BytesIO()
-    wb.save(final_buf)
-    final_buf.seek(0)
-    if(password == "" or password == None):
-        with open(EXCEL_PATH, "wb") as f_out:
-            f_out.write(final_buf.getvalue())
-    else:
-        with open(EXCEL_PATH, "wb") as f_out:
-            office = OOXMLFile(final_buf)
-            office.encrypt(password, f_out)
+    
+    # Descobrir ranges das tabelas
+    table_ranges = get_table_ranges(EXCEL_PATH)
+    quote_range = table_ranges.get(TABLE_QUOTE_NAME)
+    invest_main_range = table_ranges.get(TABLE_INVEST_MAIN)
+    invest_porcent_range = table_ranges.get(TABLE_INVEST_PORCENT)
+    
+    if not quote_range or not invest_main_range or not invest_porcent_range:
+        raise Exception(f"Não conseguiu descobrir ranges das tabelas. Ranges encontrados: {table_ranges}")
+    
+    # *** COTAÇÕES ***
+    ws_quote = book.sheets[SHEET_QUOTE_NAME]
+    header_quote, data_quote = read_table_xlwings(ws_quote, quote_range)
+    
+    if header_quote:
+        df_quote = pd.DataFrame(data_quote)
+        latest_date = df_quote["Data"].max()
+        df_quote_latest = df_quote[df_quote["Data"] == latest_date].copy()
+        
+        is_insert = False
+        if latest_date < pd.Timestamp(date_today):
+            df_quote_latest["Data"] = date_today
+            is_insert = True
+        
+        # Atualizar colunas globais para as funções de fetch
+        global DATE_COL, TICKER_COL, VALUE_COL, CURRENCY_BASE_COL, TYPE_COL
+        DATE_COL = "Data"
+        TICKER_COL = "Ticker"
+        VALUE_COL = "Valor"
+        CURRENCY_BASE_COL = "Moeda Base"
+        TYPE_COL = "Tipo"
+        
+        # Chamadas HTTP para APIs
+        df_currencies_api = handle_get_currencies(df_quote_latest)
+        df_assets_api = handle_get_assets(df_quote_latest, df_currencies_api)
+        df_criptos_api = handle_get_criptos(df_quote_latest)
+        
+        # Inserir/atualizar dados
+        df_new_quotes = pd.concat([df_currencies_api, df_assets_api, df_criptos_api], ignore_index=True)
+        
+        if is_insert:
+            insert_table_xlwings(ws_quote, quote_range, df_new_quotes)
+        else:
+            write_table_xlwings(ws_quote, quote_range, df_new_quotes)
+    
+    # *** INVESTIMENTOS ***
+    for sheet_name, table_name, table_range in [(SHEET_INVEST_MAIN, TABLE_INVEST_MAIN, invest_main_range), (SHEET_INVEST_PORCENT, TABLE_INVEST_PORCENT, invest_porcent_range)]:
+        ws_invest = book.sheets[sheet_name]
+        header_invest, data_invest = read_table_xlwings(ws_invest, table_range)
+        
+        if header_invest:
+            df_invest = pd.DataFrame(data_invest)
+            latest_date = df_invest["Data"].max()
+            df_invest_latest = df_invest[df_invest["Data"] == latest_date].copy()
+            
+            if latest_date < pd.Timestamp(date_today):
+                df_invest_latest["Data"] = date_today
+                insert_table_xlwings(ws_invest, table_range, df_invest_latest)
+    
+    # Atualizar timestamp
+    ws_quote.range("A1").value = "Última Atualização"
+    ws_quote.range("A2").value = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    
+    # Salvar via Excel (preserva gráficos, slicers, etc)
+    book.save()
+    book.close()
 
     print("\n**** Atualização Concluída ****")
 

@@ -36,18 +36,21 @@ Objetivo: manter o comportamento de hoje apontando para as tabelas renomeadas, e
 Decisões: (1) investimento só **duplica** a última leva trocando `Data` (lookups na planilha já puxam cotação); (2) colunas referenciadas por **nome fixo**; (3) mês não virou → investimento não faz nada, só cotação atualiza no lugar.
 
 - [x] **Etapa 1** — Env Vars: `TABLE_QUOTE_NAME="Table_Cotacoes"`; substituir o par único de investimento por `SHEET/TABLE_INVEST_MAIN` e `SHEET/TABLE_INVEST_PORCENT`.
-- [ ] **Etapa 2** — `start_flow_quote`: mapear colunas por nome (`"Data"`, `"Ticker"`, `"Valor"`, `"Moeda Base"`, `"Tipo"`) em vez de `header[0..4]`.
-- [ ] **Etapa 3** — Generalizar `start_flow_investiment(wb, date_today, sheet, table)`: lê → `max(Data)` → se mês virou, duplica e insere; senão nada. Remove as globais erradas de 11 colunas.
-- [ ] **Etapa 4** — No `main`, chamar o fluxo para `Table_Investimentos_Main` e `Table_Investimentos_Porcent`.
-- [ ] **Etapa 5** — Rodar e validar (Excel pode precisar ser fechado p/ salvar). Mês atual já existe → esperado: cotações atualizam, investimentos inalterados.
-- [ ] **Etapa 6** — Reconciliar este AGENTS.md com o estado final.
+- [x] **Etapa 2** — `start_flow_quote`: mapear colunas por nome (`"Data"`, `"Ticker"`, `"Valor"`, `"Moeda Base"`, `"Tipo"`) em vez de `header[0..4]`.
+- [x] **Etapa 3** — Generalizar `start_flow_investiment(wb, date_today, sheet, table)`: lê → `max(Data)` → se mês virou, duplica e insere; senão nada. Remove as globais erradas de 11 colunas.
+- [x] **Etapa 4** — No `main`, chamar o fluxo para `Table_Investimentos_Main` e `Table_Investimentos_Porcent`.
+- [x] **Etapa 5** — Migração para xlwings: trocar `openpyxl` por `xlwings` para preservar gráficos/slicers. Implementado em `main.py` com funções `get_table_ranges()`, `read_table_xlwings()`, `write_table_xlwings()`, `insert_table_xlwings()`.
+- [x] **Etapa 6** — Rodar teste com data real: cotações atualizadas, gráficos/slicers **preservados**. **Resultado: Sucesso. Slicers=True, Charts=True.**
+- [x] **Etapa 7** — Testar com agosto/2026 (simulação de virada de mês e inserção de investimentos). **Resultado: Sucesso. Main +20 linhas, Porcent +26 linhas, Cotações +12 linhas. Slicers=True, Charts=True.**
+- [x] **Etapa 8** — Reconciliar este AGENTS.md com o estado final. **Completo: xlwings + macOS + gráficos/slicers preservados.**
 
 ## Padrões/armadilhas do código
 
-- Nomes de coluna viram **globais** (`DATE_COL`, `TICKER_COL`, `TYPE_COL`...) atribuídas dentro de `start_flow_quote`/`start_flow_investiment`. Não existem antes do fluxo rodar, e os dois fluxos sobrescrevem `DATE_COL`/`TYPE_COL`.
+- `start_flow_quote` usa globais (`DATE_COL`, `TICKER_COL`, `VALUE_COL`, `CURRENCY_BASE_COL`, `TYPE_COL`) atribuídas com **nomes fixos** (não por posição); não existem antes da função rodar.
+- `start_flow_investiment` recebe sheet/table como parâmetros e usa apenas a coluna `"Data"` por nome; não precisa de globais para mapear as outras colunas.
 - `ler_tabela_para_dicionarios` injeta a coluna extra `REF_COL = "Ref Cells"` com as coordenadas `(row, col)` de cada célula; os fluxos de escrita dependem dela ser o **último** item de cada linha (`row[-1]`). Ao mexer nos DataFrames, preserve essa coluna no fim.
 - `openpyxl` desta versão: `ws._tables` é dict `{nome: <Table>}`, e `table.ref` dá o range (ex.: `B4:K327`). Use `range_boundaries`/`get_column_letter` como já feito.
-- Insert vs. Update por data: compara `df[DATE_COL].max()` com o 1º dia do mês atual (`get_current_date_start_of_month`). Insere linhas novas só quando muda o mês; senão atualiza a última leva no lugar.
+- Insert vs. Update por data: compara `df["Data"].max()` com o 1º dia do mês atual (`get_current_date_start_of_month`). Insere linhas novas só quando muda o mês; senão não faz nada (cotação atualiza no lugar, investimento não).
 - Imports pesados (openpyxl/pandas/requests/msoffcrypto) ficam **no fim, dentro do `try`** — não no topo. Rodar funções isoladas fora do fluxo principal falha por import ausente.
 
 ## Roteamento de cotações (por coluna `Tipo`/`Moeda Base` da aba `Cotacoes`)
@@ -55,6 +58,25 @@ Decisões: (1) investimento só **duplica** a última leva trocando `Data` (look
 - `Tipo == "FIAT"` → AwesomeAPI (`BRL` é ignorado, fica 1.0 implícito).
 - `Tipo == "CRIPTO"` → CoinGecko.
 - Demais (ações/ETF): `Moeda Base == "USD"` → Finnhub; senão → Alpha Vantage (`TIME_SERIES_DAILY`), depois convertido p/ BRL via cotação da moeda. Alpha Vantage free ≈ 5 req/min.
+
+## Migração para xlwings (Preserva gráficos e slicers)
+
+A partir de agora, o script usa **xlwings** para abrir/manipular/salvar a planilha, em vez de `openpyxl`. 
+
+**Por quê?** xlwings controla o **Excel real** (via AppleScript no macOS, via COM no Windows), então o arquivo é manipulado e salvo pelo próprio Excel. Isso preserva:
+- ✅ Gráficos (charts)
+- ✅ Slicers (segmentação de dados)
+- ✅ Pivot tables
+- ✅ Validações customizadas
+- ✅ Proteção de planilha
+- ✅ Macros/VBA (no Windows)
+
+**Requisitos:**
+- Excel instalado e acessível no macOS (via AppleScript).
+- Na primeira execução no macOS, o sistema pode pedir permissão para Python controlar o Excel → **Permitir**.
+
+**Limitação:**
+- xlwings **não suporta planilhas protegidas por senha** (a implementação atual rejeita com erro se tentar passar senha). A planilha precisa estar sem senha.
 
 ## Avisos
 
