@@ -57,7 +57,7 @@ Decisões: (1) investimento só **duplica** a última leva trocando `Data` (look
 
 - `Tipo == "FIAT"` → AwesomeAPI (`BRL` é ignorado, fica 1.0 implícito).
 - `Tipo == "CRIPTO"` → CoinGecko.
-- Demais (ações/ETF): `Moeda Base == "USD"` → Finnhub; senão → Alpha Vantage (`TIME_SERIES_DAILY`), depois convertido p/ BRL via cotação da moeda. Alpha Vantage free ≈ 5 req/min.
+- Demais (ações/ETF): `Moeda Base == "USD"` → Finnhub; senão → Alpha Vantage (`TIME_SERIES_DAILY`). Depois, **todo ativo não-FIAT/não-CRIPTO** é convertido para BRL via cotação da `Moeda Base` em `Table_Cotacoes` (`USD`, `EUR`, etc.). Alpha Vantage free ≈ 5 req/min.
 
 ## Migração para xlwings (Preserva gráficos e slicers)
 
@@ -118,7 +118,8 @@ Objetivo: replicar o comportamento do `main.py` como macro VBA dentro da planilh
 - `Tipo == "CRIPTO"` → CoinGecko (`vs_currencies=brl`, campo `brl`).
   - Para tickers como `BTC`/`SOL`, o VBA resolve o `id` real do CoinGecko antes da consulta (`bitcoin`, `solana`).
 - Ações/ETF `Moeda Base == "USD"` → Finnhub (campo `c`).
-- Ações/ETF outra moeda → Alpha Vantage (`4. close`), depois `* cotação da Moeda Base` (do próprio map FIAT) para virar BRL.
+- Ações/ETF outra moeda → Alpha Vantage (`4. close`).
+- Depois da busca, **todos os ativos não-FIAT/não-CRIPTO** são multiplicados pela cotação da `Moeda Base` para gravar `Valor` em BRL. Ex.: ETF em USD via Finnhub grava `preço USD * USDBRL`.
 
 **Etapas de implementação:**
 - [x] **Etapa 1** – Módulos VBA com estrutura base e helpers.

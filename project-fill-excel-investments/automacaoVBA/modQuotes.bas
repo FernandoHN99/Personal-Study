@@ -6,7 +6,8 @@ Attribute VB_Name = "modQuotes"
 '   Tipo = FIAT   -> AwesomeAPI (BRL fica 1.0 implicito)
 '   Tipo = CRIPTO -> CoinGecko
 '   Demais ativos: Moeda Base = USD -> Finnhub
-'                  senao            -> Alpha Vantage + conversao p/ BRL
+'                  senao            -> Alpha Vantage
+'   Todo ativo nao-FIAT/nao-CRIPTO e convertido para BRL pela Moeda Base.
 '
 ' Fluxo:
 '   - Le ultima leva de Table_Cotacoes (linhas com a maior Data).
@@ -42,7 +43,7 @@ Public Sub UpdateQuotes()
     ' 1a passada: buscar moedas FIAT (precisamos delas p/ converter ativos)
     Set currencyMap = FetchAllValues(rows)
 
-    ' Converter ativos nao-USD (Alpha Vantage) para BRL usando currencyMap
+    ' Converter todos os ativos nao-FIAT/nao-CRIPTO para BRL usando currencyMap
     ApplyCurrencyConversion rows, currencyMap
 
     ' Gravar de volta na planilha
@@ -69,6 +70,7 @@ Private Function FetchAllValues(rows As Collection) As KeyValueStore
     Dim val As Variant
 
     Set currencyMap = New KeyValueStore
+    currencyMap.Item("BRL") = 1
 
     For i = 1 To rows.Count
         Set rowDict = rows(i)
@@ -79,7 +81,7 @@ Private Function FetchAllValues(rows As Collection) As KeyValueStore
         Select Case UCase(assetType)
             Case UCase(TYPE_FIAT)
                 val = FetchCurrency(ticker)
-                If IsNumeric(val) Then currencyMap.Item(ticker) = val
+                If IsNumeric(val) Then currencyMap.Item(UCase(ticker)) = val
 
             Case UCase(TYPE_CRIPTO)
                 val = FetchCrypto(ticker)
@@ -99,7 +101,7 @@ Private Function FetchAllValues(rows As Collection) As KeyValueStore
     Set FetchAllValues = currencyMap
 End Function
 
-' *** Converter ativos globais (nao-USD, nao-FIAT, nao-CRIPTO) para BRL ***
+' *** Converter ativos (nao-FIAT, nao-CRIPTO) para BRL ***
 Private Sub ApplyCurrencyConversion(rows As Collection, currencyMap As KeyValueStore)
     Dim i As Long
     Dim rowDict As KeyValueStore
@@ -114,8 +116,10 @@ Private Sub ApplyCurrencyConversion(rows As Collection, currencyMap As KeyValueS
         currencyBase = CStr(rowDict.Item(COL_COTACOES_MOEDA_BASE))
         val = rowDict.Item("__val")
 
+        currencyBase = UCase(currencyBase)
+
         If assetType <> UCase(TYPE_FIAT) And assetType <> UCase(TYPE_CRIPTO) Then
-            If UCase(currencyBase) <> "USD" And IsNumeric(val) Then
+            If IsNumeric(val) Then
                 If currencyMap.Exists(currencyBase) Then
                     rate = currencyMap.Item(currencyBase)
                     If IsNumeric(rate) Then rowDict.Item("__val") = CDbl(val) * CDbl(rate)
